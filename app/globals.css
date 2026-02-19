@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 40% 98%;
+  --foreground: 221 39% 11%;
+}
+
+.dark {
+  --background: 225 44% 8%;
+  --foreground: 210 40% 98%;
+}
+
+* {
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body), sans-serif;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), sans-serif;
+}
+
+.section-shell {
+  @apply mx-auto max-w-7xl px-6 py-20 md:px-10;
+}
+
+.glass {
+  @apply rounded-2xl border border-white/20 bg-white/10 shadow-glass backdrop-blur-xl;
+}
+
+.dark .glass {
+  @apply border-white/10 bg-white/5;
+}
