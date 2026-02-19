@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: "Nova Tech Solutions | Complete Digital Management for Modern Schools",
   description:
     "Nova Tech Solutions helps private schools with website development, ERP systems, result management, social media, cloud security, and complete digital infrastructure.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg"
+  },
   keywords: [
     "School ERP",
     "School Website Development",

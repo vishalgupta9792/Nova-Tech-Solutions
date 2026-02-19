@@ -45,7 +45,9 @@ const faqs = [
 ];
 
 const fmt = (n: number) => `INR ${n.toLocaleString("en-IN")}`;
-const upi = (name: string, amount: number) => `upi://pay?pa=${UPI_ID}&pn=Nova%20Tech%20Solutions&am=${amount}&cu=INR&tn=${encodeURIComponent(name)}`;
+const upiIntent = (name: string, amount: number) => `upi://pay?pa=${UPI_ID}&pn=Nova%20Tech%20Solutions&am=${amount}&cu=INR&tn=${encodeURIComponent(name)}`;
+const upiQr = (name: string, amount: number) =>
+  `https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=${encodeURIComponent(upiIntent(name, amount))}`;
 
 function Title({ tag, head, desc }: { tag: string; head: string; desc: string }) {
   return (
@@ -156,7 +158,7 @@ export default function HomePage() {
               <p className="text-sm uppercase tracking-[0.12em] text-slate-600 dark:text-slate-300">{p.name}</p><h3 className="mt-2 text-2xl font-bold">{p.sub}</h3><p className="mt-4 text-3xl font-extrabold">{fmt(p.amount)}</p>
               <div className="my-5 h-px bg-slate-300/40 dark:bg-white/20" />
               <ul className="space-y-2">{p.points.map((x) => <li key={x} className="inline-flex items-start gap-2 text-sm"><BadgeCheck className="mt-0.5 h-4 w-4 text-emerald-500" />{x}</li>)}</ul>
-              <div className="mt-6 grid gap-2"><a href={upi(p.name, p.amount)} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white"><Wallet className="h-4 w-4" />Pay Now</a><a href="#contact" className="rounded-xl border border-slate-300/50 px-4 py-3 text-center text-sm font-semibold dark:border-white/20">Book Consultation</a></div>
+              <div className="mt-6 grid gap-2"><a href={upiQr(p.name, p.amount)} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white"><Wallet className="h-4 w-4" />Scan & Pay (UPI QR)</a><a href="#contact" className="rounded-xl border border-slate-300/50 px-4 py-3 text-center text-sm font-semibold dark:border-white/20">Book Consultation</a></div>
             </motion.article>
           ))}
         </div>
