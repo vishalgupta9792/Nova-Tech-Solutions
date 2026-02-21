@@ -5,6 +5,15 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Flame, Layers, Rocket, School, Sparkles, Wallet, Wind, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => {
+      open: () => void;
+      on: (event: string, handler: (response: { error?: { description?: string } }) => void) => void;
+    };
+  }
+}
+
 type Lead = { id: string; name: string; school: string; phone: string; service: string; plan: string; createdAt: string };
 const STORAGE_KEY = "nova-leads-v2";
 const UPI_ID = "novatechsolutions@okicici";
@@ -141,6 +150,7 @@ export default function HomePage() {
   const [form, setForm] = useState({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
   const [dealEndsAt] = useState(() => Date.now() + 1000 * 60 * 60 * 48);
   const [timeLeft, setTimeLeft] = useState(1000 * 60 * 60 * 48);
+  const [payingPlan, setPayingPlan] = useState<string | null>(null);
   const { scrollYProgress } = useScroll();
   const orbLeftY = useTransform(scrollYProgress, [0, 1], [-30, 180]);
   const orbRightY = useTransform(scrollYProgress, [0, 1], [-10, 120]);
@@ -156,6 +166,15 @@ export default function HomePage() {
     }, 1000);
     return () => clearInterval(timer);
   }, [dealEndsAt]);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -166,6 +185,59 @@ export default function HomePage() {
   const hours = String(Math.floor(timeLeft / (1000 * 60 * 60))).padStart(2, "0");
   const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
   const seconds = String(Math.floor((timeLeft % (1000 * 60)) / 1000)).padStart(2, "0");
+
+  const payWithRazorpay = async (plan: typeof plans[number]) => {
+    if (!window.Razorpay) {
+      setMsg("Payment SDK is still loading. Please try again.");
+      return;
+    }
+
+    try {
+      setPayingPlan(plan.name);
+      const response = await fetch("/api/razorpay/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: plan.amount, planName: plan.name })
+      });
+
+      const payload = await response.json();
+      if (!response.ok) {
+        throw new Error(payload?.error ?? "Failed to create Razorpay order.");
+      }
+
+      const rz = new window.Razorpay({
+        key: payload.keyId,
+        amount: payload.amount,
+        currency: payload.currency,
+        name: "Nova Tech Solutions",
+        description: `${plan.name} - ${plan.sub}`,
+        order_id: payload.id,
+        prefill: {
+          name: form.name || "School Admin",
+          contact: form.phone || ""
+        },
+        notes: {
+          plan: plan.name
+        },
+        theme: {
+          color: "#10b981"
+        },
+        handler: (payResponse: { razorpay_payment_id?: string }) => {
+          setMsg(`Payment successful: ${payResponse.razorpay_payment_id ?? "Confirmed"}`);
+        }
+      });
+
+      rz.on("payment.failed", (failed) => {
+        setMsg(failed?.error?.description ?? "Payment failed. Please try again.");
+      });
+
+      rz.open();
+    } catch (error) {
+      setMsg(error instanceof Error ? error.message : "Unable to start payment.");
+    } finally {
+      setPayingPlan(null);
+    }
+  };
 
   return (
     <main className="relative overflow-hidden">
@@ -314,7 +386,20 @@ export default function HomePage() {
               <p className="mt-2 text-4xl font-extrabold">{fmt(p.amount)}</p>
               <div className="my-5 h-px bg-slate-300/40 dark:bg-white/20" />
               <ul className="space-y-2">{p.points.map((x) => <li key={x} className="inline-flex items-start gap-2 text-sm"><BadgeCheck className="mt-0.5 h-4 w-4 text-emerald-500" />{x}</li>)}</ul>
-              <div className="mt-6 grid gap-2"><a href={upiQr(p.name, p.amount)} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white"><Wallet className="h-4 w-4" />Scan & Pay (UPI QR)</a><a href="#contact" className="rounded-xl border border-slate-300/50 px-4 py-3 text-center text-sm font-semibold dark:border-white/20">Book Consultation</a></div>
+              <div className="mt-6 grid gap-2">
+                <button
+                  onClick={() => payWithRazorpay(p)}
+                  disabled={payingPlan === p.name}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <Wallet className="h-4 w-4" />
+                  {payingPlan === p.name ? "Starting Razorpay..." : "Pay with Razorpay"}
+                </button>
+                <a href={upiQr(p.name, p.amount)} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300/50 px-4 py-3 text-sm font-semibold dark:border-white/20">
+                  Scan & Pay (UPI QR)
+                </a>
+                <a href="#contact" className="rounded-xl border border-slate-300/50 px-4 py-3 text-center text-sm font-semibold dark:border-white/20">Book Consultation</a>
+              </div>
             </motion.article>
           ))}
         </div>
