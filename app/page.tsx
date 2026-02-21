@@ -222,8 +222,24 @@ export default function HomePage() {
         theme: {
           color: "#10b981"
         },
-        handler: (payResponse: { razorpay_payment_id?: string }) => {
-          setMsg(`Payment successful: ${payResponse.razorpay_payment_id ?? "Confirmed"}`);
+        handler: async (payResponse: {
+          razorpay_payment_id?: string;
+          razorpay_order_id?: string;
+          razorpay_signature?: string;
+        }) => {
+          const verifyResponse = await fetch("/api/razorpay/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payResponse)
+          });
+
+          const verifyPayload = await verifyResponse.json();
+          if (!verifyResponse.ok || !verifyPayload?.verified) {
+            setMsg("Payment captured but verification failed. Contact support.");
+            return;
+          }
+
+          setMsg(`Payment verified: ${payResponse.razorpay_payment_id ?? "Confirmed"}`);
         }
       });
 
