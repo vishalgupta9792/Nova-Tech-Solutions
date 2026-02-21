@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, Layers, Rocket, Wallet } from "lucide-react";
+import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Layers, Rocket, School, Sparkles, Wallet, Wind } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 type Lead = { id: string; name: string; school: string; phone: string; service: string; plan: string; createdAt: string };
@@ -45,14 +45,14 @@ const expertise = [
   { label: "Continuous Optimization", icon: Rocket }
 ];
 const technologyTicker = [
-  "Next.js",
-  "React",
-  "TypeScript",
-  "Tailwind CSS",
-  "Framer Motion",
-  "Cloud Hosting",
-  "School ERP",
-  "Result Automation"
+  { label: "React", icon: Atom, iconTone: "text-cyan-300", chipTone: "border-cyan-300/35 bg-cyan-500/10" },
+  { label: "TypeScript", icon: FileCode2, iconTone: "text-blue-300", chipTone: "border-blue-300/35 bg-blue-500/10" },
+  { label: "Tailwind CSS", icon: Wind, iconTone: "text-sky-300", chipTone: "border-sky-300/35 bg-sky-500/10" },
+  { label: "Framer Motion", icon: Sparkles, iconTone: "text-fuchsia-300", chipTone: "border-fuchsia-300/35 bg-fuchsia-500/10" },
+  { label: "Cloud Hosting", icon: Cloud, iconTone: "text-indigo-300", chipTone: "border-indigo-300/35 bg-indigo-500/10" },
+  { label: "School ERP", icon: School, iconTone: "text-emerald-300", chipTone: "border-emerald-300/35 bg-emerald-500/10" },
+  { label: "Result Automation", icon: ClipboardCheck, iconTone: "text-teal-300", chipTone: "border-teal-300/35 bg-teal-500/10" },
+  { label: "Next.js", icon: Rocket, iconTone: "text-slate-200", chipTone: "border-slate-300/35 bg-slate-500/10" }
 ];
 const faqs = [
   { q: "How fast can you launch a school website?", a: "In most cases, 2 to 4 weeks with content and approvals ready." },
@@ -221,16 +221,26 @@ export default function HomePage() {
 
       <section id="technology" className="section-shell relative z-10">
         <Title tag="Expertise" head="Technology + Domain + Execution" desc="Focused execution approach similar high-performing service companies." />
-        <div className="glass mb-4 overflow-hidden py-3">
+        <div className="glass mb-4 overflow-hidden p-2">
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 16, ease: "linear", repeat: Infinity }}
-            className="flex w-max gap-8 px-4 text-sm font-semibold uppercase tracking-[0.1em] text-slate-700 dark:text-slate-200"
+            transition={{ duration: 18, ease: "linear", repeat: Infinity }}
+            className="flex w-max gap-3 px-2"
           >
             {[...technologyTicker, ...technologyTicker].map((item, i) => (
-              <span key={`${item}-${i}`} className="whitespace-nowrap">
-                {item}
-              </span>
+              <motion.div
+                key={`${item.label}-${i}`}
+                whileHover={{ y: -2, scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                className={`group flex items-center gap-3 rounded-xl border px-3 py-2 backdrop-blur ${item.chipTone}`}
+              >
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/20 bg-white/10">
+                  <item.icon className={`h-4 w-4 ${item.iconTone}`} />
+                </span>
+                <span className="whitespace-nowrap text-xs font-semibold uppercase tracking-[0.12em] text-slate-800 dark:text-slate-100">
+                  {item.label}
+                </span>
+              </motion.div>
             ))}
           </motion.div>
         </div>
