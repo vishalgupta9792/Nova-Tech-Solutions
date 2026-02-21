@@ -1,7 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { FormEvent, ReactNode, useEffect, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Layers, Rocket, School, Sparkles, Wallet, Wind, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -77,11 +77,29 @@ function Title({ tag, head, desc }: { tag: string; head: string; desc: string })
   );
 }
 
+function RevealSection({ id, className, children }: { id?: string; className: string; children: ReactNode }) {
+  return (
+    <motion.section
+      id={id}
+      initial={{ opacity: 0, y: 42, scale: 0.985 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.section>
+  );
+}
+
 export default function HomePage() {
   const [faqOpen, setFaqOpen] = useState(0);
   const [msg, setMsg] = useState("");
   const [leads, setLeads] = useState<Lead[]>([]);
   const [form, setForm] = useState({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
+  const { scrollYProgress } = useScroll();
+  const orbLeftY = useTransform(scrollYProgress, [0, 1], [-30, 180]);
+  const orbRightY = useTransform(scrollYProgress, [0, 1], [-10, 120]);
 
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -98,9 +116,10 @@ export default function HomePage() {
 
   return (
     <main className="relative overflow-hidden">
+      <motion.div style={{ scaleX: scrollYProgress }} className="fixed left-0 top-0 z-[70] h-1 w-full origin-left bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(16,185,129,0.18),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(59,130,246,0.2),transparent_40%),linear-gradient(135deg,rgba(248,250,252,0.95),rgba(241,245,249,0.92))] dark:bg-hero-glow" />
-      <div className="pointer-events-none absolute -left-20 top-24 h-80 w-80 rounded-full bg-emerald-400/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 top-8 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
+      <motion.div style={{ y: orbLeftY }} className="pointer-events-none absolute -left-20 top-24 h-80 w-80 rounded-full bg-emerald-400/20 blur-3xl" />
+      <motion.div style={{ y: orbRightY }} className="pointer-events-none absolute -right-20 top-8 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
 
       <header className="section-shell relative z-10 py-7">
         <nav className="glass flex flex-wrap items-center justify-between gap-3 px-5 py-3 text-slate-900 dark:text-slate-100">
@@ -149,7 +168,7 @@ export default function HomePage() {
         </nav>
       </header>
 
-      <section className="section-shell relative z-10 pt-4 md:pt-8">
+      <RevealSection className="section-shell relative z-10 pb-10 pt-4 md:pb-12 md:pt-8">
         <div className="glass grid items-center gap-7 overflow-hidden px-7 py-10 md:grid-cols-2 md:px-10">
           <div>
             <p className="mb-4 inline-flex rounded-full border border-slate-300/60 bg-white/50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-800 dark:border-white/25 dark:bg-white/10 dark:text-white">Top Rated EdTech Partner</p>
@@ -163,18 +182,18 @@ export default function HomePage() {
           </div>
           <motion.img initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1600&q=80" alt="School digital transformation" className="h-[420px] w-full rounded-2xl object-cover" />
         </div>
-      </section>
+      </RevealSection>
 
-      <section id="industries" className="section-shell relative z-10">
+      <RevealSection id="industries" className="section-shell relative z-10 pt-8 md:pt-10">
         <Title tag="Who We Are" head="Agency-Grade Delivery with Product Thinking" desc="KrishaWeb style funnel follow karte hue: strong proof, rich projects, clear expertise, and conversion-oriented contact flow." />
         <div className="grid gap-4 md:grid-cols-4">
           {[["8+", "Years Experience"], ["20+", "Specialists"], ["300+", "Projects"], ["4.8/5", "Client Rating"]].map((s, i) => (
             <motion.div key={s[1]} custom={i} variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }} className="glass p-6 text-center"><p className="text-3xl font-bold">{s[0]}</p><p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{s[1]}</p></motion.div>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
-      <section id="services" className="section-shell relative z-10">
+      <RevealSection id="services" className="section-shell relative z-10">
         <Title tag="Services" head="High-Impact Solutions for School Growth" desc="Structured delivery model across brand, engineering, operations, and automation." />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {serviceCards.map((s, i) => (
@@ -183,9 +202,9 @@ export default function HomePage() {
             </motion.article>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
-      <section id="projects" className="section-shell relative z-10">
+      <RevealSection id="projects" className="section-shell relative z-10">
         <Title tag="Projects" head="School Websites and Platforms Delivered" desc="Selected school projects that demonstrate brand, UX, and system integration quality." />
         <div className="grid gap-5 md:grid-cols-3">
           {projects.map((p, i) => (
@@ -195,9 +214,9 @@ export default function HomePage() {
             </motion.article>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
-      <section id="pricing" className="section-shell relative z-10">
+      <RevealSection id="pricing" className="section-shell relative z-10">
         <Title tag="Pricing" head="Clear Plans with Fast Decision Flow" desc="Animated cards and direct payment intent links to reduce friction." />
         <div className="grid gap-5 lg:grid-cols-3">
           {plans.map((p, i) => (
@@ -209,9 +228,9 @@ export default function HomePage() {
             </motion.article>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
-      <section id="technology" className="section-shell relative z-10">
+      <RevealSection id="technology" className="section-shell relative z-10">
         <Title tag="Expertise" head="Technology + Domain + Execution" desc="Focused execution approach similar high-performing service companies." />
         <div className="glass mb-4 overflow-hidden p-2">
           <motion.div
@@ -244,9 +263,9 @@ export default function HomePage() {
             </motion.div>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
-      <section className="section-shell relative z-10">
+      <RevealSection className="section-shell relative z-10">
         <Title tag="FAQ" head="Common Questions from School Leaders" desc="Clear answers that reduce decision friction for principals and directors." />
         <div className="space-y-3">
           {faqs.map((f, i) => (
@@ -256,9 +275,9 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </section>
+      </RevealSection>
 
-      <section id="contact" className="section-shell relative z-10">
+      <RevealSection id="contact" className="section-shell relative z-10">
         <Title tag="Contact" head="Premium Inquiry Experience" desc="High-converting contact flow with bold visual storytelling and fast response promise." />
         <div className="grid gap-6 md:grid-cols-2">
           <motion.form
@@ -330,7 +349,7 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </div>
-      </section>
+      </RevealSection>
 
       <motion.footer initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative z-10 border-t border-slate-300/30 bg-slate-950/95 text-slate-200">
         <div className="section-shell grid gap-8 py-12 md:grid-cols-4">
