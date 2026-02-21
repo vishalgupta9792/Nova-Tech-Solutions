@@ -1,7 +1,7 @@
 "use client";
 
-import { FormEvent, ReactNode, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Layers, Rocket, School, Sparkles, Wallet, Wind, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -59,6 +59,12 @@ const faqs = [
   { q: "Do you support CBSE/ICSE result formats?", a: "Yes, we configure modules around school-specific workflows." }
 ];
 const contactHighlights = ["Fast Onboarding", "Admission Growth Focus", "24x7 Tech Support", "Conversion-Led UX"];
+const stats = [
+  { value: 8, label: "Years Experience", suffix: "+" },
+  { value: 20, label: "Specialists", suffix: "+" },
+  { value: 300, label: "Projects", suffix: "+" },
+  { value: 4.8, label: "Client Rating", suffix: "/5", decimals: 1 }
+];
 
 const fmt = (n: number) => `INR ${n.toLocaleString("en-IN")}`;
 const upiIntent = (name: string, amount: number) => `upi://pay?pa=${UPI_ID}&pn=Nova%20Tech%20Solutions&am=${amount}&cu=INR&tn=${encodeURIComponent(name)}`;
@@ -89,6 +95,42 @@ function RevealSection({ id, className, children }: { id?: string; className: st
     >
       {children}
     </motion.section>
+  );
+}
+
+function CountUp({
+  value,
+  suffix = "",
+  decimals = 0
+}: {
+  value: number;
+  suffix?: string;
+  decimals?: number;
+}) {
+  const [display, setDisplay] = useState(0);
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const inView = useInView(ref, { once: true, amount: 0.8 });
+
+  useEffect(() => {
+    if (!inView) return;
+    const duration = 1200;
+    const start = performance.now();
+    let frame = 0;
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - (1 - progress) ** 3;
+      setDisplay(value * eased);
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [inView, value]);
+
+  return (
+    <span ref={ref}>
+      {display.toFixed(decimals)}
+      {suffix}
+    </span>
   );
 }
 
@@ -187,8 +229,13 @@ export default function HomePage() {
       <RevealSection id="industries" className="section-shell relative z-10 pt-8 md:pt-10">
         <Title tag="Who We Are" head="Agency-Grade Delivery with Product Thinking" desc="KrishaWeb style funnel follow karte hue: strong proof, rich projects, clear expertise, and conversion-oriented contact flow." />
         <div className="grid gap-4 md:grid-cols-4">
-          {[["8+", "Years Experience"], ["20+", "Specialists"], ["300+", "Projects"], ["4.8/5", "Client Rating"]].map((s, i) => (
-            <motion.div key={s[1]} custom={i} variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }} className="glass p-6 text-center"><p className="text-3xl font-bold">{s[0]}</p><p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{s[1]}</p></motion.div>
+          {stats.map((s, i) => (
+            <motion.div key={s.label} custom={i} variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }} className="glass p-6 text-center">
+              <p className="text-3xl font-bold">
+                <CountUp value={s.value} suffix={s.suffix} decimals={s.decimals ?? 0} />
+              </p>
+              <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{s.label}</p>
+            </motion.div>
           ))}
         </div>
       </RevealSection>
