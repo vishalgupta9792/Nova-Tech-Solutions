@@ -326,7 +326,7 @@ export default function HomePage() {
 
       <RevealSection id="contact" className="section-shell relative z-10">
         <Title tag="Contact" head="Premium Inquiry Experience" desc="High-converting contact flow with bold visual storytelling and fast response promise." />
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 md:items-start">
           <motion.form
             onSubmit={submit}
             initial={{ opacity: 0, x: -24 }}
@@ -350,7 +350,7 @@ export default function HomePage() {
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="glass relative overflow-hidden p-6"
+            className="glass relative self-start overflow-hidden p-6"
           >
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(16,185,129,0.25),transparent_40%),radial-gradient(circle_at_88%_8%,rgba(56,189,248,0.22),transparent_45%),linear-gradient(150deg,rgba(15,23,42,0.92),rgba(8,47,73,0.9))]" />
             <motion.div
@@ -380,10 +380,25 @@ export default function HomePage() {
                 ))}
               </div>
             </motion.div>
+            <div className="relative mt-5 space-y-3">
+              <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.08em] text-slate-200">
+                <span>Experience Depth</span>
+                <span>94%</span>
+              </div>
+              <div className="h-2 rounded-full bg-white/15">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "94%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  className="h-2 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400"
+                />
+              </div>
+            </div>
             <motion.div
-              animate={{ y: [0, -10, 0], x: [0, 6, 0] }}
+              animate={{ y: [0, -6, 0], x: [0, 4, 0] }}
               transition={{ duration: 7.3, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-5 right-6 rounded-xl border border-white/25 bg-white/15 px-4 py-2 backdrop-blur-lg"
+              className="absolute bottom-4 right-4 rounded-xl border border-white/25 bg-white/15 px-4 py-2 backdrop-blur-lg"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-100">3D Motion Layer</p>
             </motion.div>
