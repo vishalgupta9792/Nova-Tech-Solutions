@@ -395,20 +395,6 @@ export default function HomePage() {
                 />
               </div>
             </div>
-            <motion.div
-              animate={{ y: [0, -6, 0], x: [0, 4, 0] }}
-              transition={{ duration: 7.3, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-4 right-4 rounded-xl border border-white/25 bg-white/15 px-4 py-2 backdrop-blur-lg"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-100">3D Motion Layer</p>
-            </motion.div>
-            <motion.div
-              animate={{ y: [0, -8, 0], x: [0, -5, 0] }}
-              transition={{ duration: 6.6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-4 left-6 rounded-xl border border-cyan-300/35 bg-cyan-400/15 px-4 py-2 backdrop-blur-lg"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-cyan-100">Animated Experience</p>
-            </motion.div>
           </motion.div>
         </div>
       </RevealSection>
