@@ -1,13 +1,12 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Layers, Rocket, School, Sparkles, Wallet, Wind } from "lucide-react";
+import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Layers, Rocket, School, Sparkles, Wallet, Wind, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 type Lead = { id: string; name: string; school: string; phone: string; service: string; plan: string; createdAt: string };
 const STORAGE_KEY = "nova-leads-v2";
-const ADMIN_PASS = "novaadmin123";
 const UPI_ID = "novatechsolutions@okicici";
 const reveal = { hidden: { opacity: 0, y: 24 }, show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.55 } }) };
 
@@ -59,6 +58,7 @@ const faqs = [
   { q: "Can you migrate from existing ERP?", a: "Yes, we provide phased data migration and onboarding support." },
   { q: "Do you support CBSE/ICSE result formats?", a: "Yes, we configure modules around school-specific workflows." }
 ];
+const contactHighlights = ["Fast Onboarding", "Admission Growth Focus", "24x7 Tech Support", "Conversion-Led UX"];
 
 const fmt = (n: number) => `INR ${n.toLocaleString("en-IN")}`;
 const upiIntent = (name: string, amount: number) => `upi://pay?pa=${UPI_ID}&pn=Nova%20Tech%20Solutions&am=${amount}&cu=INR&tn=${encodeURIComponent(name)}`;
@@ -79,8 +79,6 @@ function Title({ tag, head, desc }: { tag: string; head: string; desc: string })
 
 export default function HomePage() {
   const [faqOpen, setFaqOpen] = useState(0);
-  const [admin, setAdmin] = useState(false);
-  const [adminInput, setAdminInput] = useState("");
   const [msg, setMsg] = useState("");
   const [leads, setLeads] = useState<Lead[]>([]);
   const [form, setForm] = useState({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
@@ -90,12 +88,6 @@ export default function HomePage() {
     if (raw) setLeads(JSON.parse(raw));
   }, []);
   useEffect(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(leads)); }, [leads]);
-
-  const topServices = useMemo(() => {
-    const m = new Map<string, number>();
-    leads.forEach((l) => m.set(l.service, (m.get(l.service) ?? 0) + 1));
-    return [...m.entries()].sort((a, b) => b[1] - a[1]);
-  }, [leads]);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -267,32 +259,76 @@ export default function HomePage() {
       </section>
 
       <section id="contact" className="section-shell relative z-10">
-        <Title tag="Contact + CRM" head="Lead Capture with Admin Visibility" desc="Website par user jo service select kare, wo admin dashboard me instantly visible hai." />
+        <Title tag="Contact" head="Premium Inquiry Experience" desc="High-converting contact flow with bold visual storytelling and fast response promise." />
         <div className="grid gap-6 md:grid-cols-2">
-          <form onSubmit={submit} className="glass space-y-4 p-6">
-            <input required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="Your Name" className="w-full rounded-xl border border-slate-300/50 bg-white/70 px-4 py-3 text-sm dark:border-white/20 dark:bg-white/10" />
-            <input required value={form.school} onChange={(e) => setForm((p) => ({ ...p, school: e.target.value }))} placeholder="School Name" className="w-full rounded-xl border border-slate-300/50 bg-white/70 px-4 py-3 text-sm dark:border-white/20 dark:bg-white/10" />
-            <input required value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} placeholder="Phone Number" className="w-full rounded-xl border border-slate-300/50 bg-white/70 px-4 py-3 text-sm dark:border-white/20 dark:bg-white/10" />
-            <select value={form.service} onChange={(e) => setForm((p) => ({ ...p, service: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/70 px-4 py-3 text-sm dark:border-white/20 dark:bg-slate-900">{serviceCards.map((s) => <option key={s.title}>{s.title}</option>)}</select>
-            <select value={form.plan} onChange={(e) => setForm((p) => ({ ...p, plan: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/70 px-4 py-3 text-sm dark:border-white/20 dark:bg-slate-900">{plans.map((p) => <option key={p.name}>{p.name}</option>)}</select>
-            <button className="w-full rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-white">Submit Requirement</button>
+          <motion.form
+            onSubmit={submit}
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass relative space-y-4 overflow-hidden p-6"
+          >
+            <div className="pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-emerald-400/25 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-14 -left-14 h-40 w-40 rounded-full bg-blue-400/20 blur-3xl" />
+            <input required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="Your Name" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
+            <input required value={form.school} onChange={(e) => setForm((p) => ({ ...p, school: e.target.value }))} placeholder="School Name" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
+            <input required value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} placeholder="Phone Number" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
+            <select value={form.service} onChange={(e) => setForm((p) => ({ ...p, service: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-slate-900">{serviceCards.map((s) => <option key={s.title}>{s.title}</option>)}</select>
+            <select value={form.plan} onChange={(e) => setForm((p) => ({ ...p, plan: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-slate-900">{plans.map((p) => <option key={p.name}>{p.name}</option>)}</select>
+            <motion.button whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }} className="w-full rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-16px_rgba(16,185,129,0.95)]">
+              Submit Requirement
+            </motion.button>
             {msg ? <p className="text-sm text-emerald-500">{msg}</p> : null}
-          </form>
-          <div id="admin" className="glass p-6">
-            <p className="text-lg font-semibold">Admin Dashboard</p>
-            {!admin ? (
-              <>
-                <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">Enter password to unlock analytics.</p>
-                <div className="mt-4 flex gap-2"><input type="password" value={adminInput} onChange={(e) => setAdminInput(e.target.value)} placeholder="Admin password" className="w-full rounded-xl border border-slate-300/50 bg-white/70 px-4 py-3 text-sm dark:border-white/20 dark:bg-white/10" /><button onClick={() => setAdmin(adminInput === ADMIN_PASS)} className="rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white">Unlock</button></div>
-                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Demo password: {ADMIN_PASS}</p>
-              </>
-            ) : (
-              <div className="mt-4 space-y-4">
-                <div className="grid grid-cols-3 gap-2 text-center text-sm"><div className="rounded-lg border border-slate-300/50 p-3 dark:border-white/20"><p className="text-xs">Leads</p><p className="text-xl font-bold">{leads.length}</p></div><div className="rounded-lg border border-slate-300/50 p-3 dark:border-white/20"><p className="text-xs">Top Service</p><p className="text-xs font-semibold">{topServices[0]?.[0] ?? "N/A"}</p></div><div className="rounded-lg border border-slate-300/50 p-3 dark:border-white/20"><p className="text-xs">Top Plan</p><p className="text-xs font-semibold">{leads[0]?.plan ?? "N/A"}</p></div></div>
-                <div className="space-y-2">{topServices.map(([s, c]) => <div key={s}><div className="mb-1 flex justify-between text-xs"><span>{s}</span><span>{c}</span></div><div className="h-2 rounded-full bg-slate-200 dark:bg-white/10"><div style={{ width: `${Math.min(c * 25, 100)}%` }} className="h-2 rounded-full bg-emerald-500" /></div></div>)}</div>
+          </motion.form>
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="glass relative overflow-hidden p-6"
+          >
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(16,185,129,0.25),transparent_40%),radial-gradient(circle_at_88%_8%,rgba(56,189,248,0.22),transparent_45%),linear-gradient(150deg,rgba(15,23,42,0.92),rgba(8,47,73,0.9))]" />
+            <motion.div
+              animate={{ y: [0, -8, 0], rotateX: [0, 2, 0], rotateY: [0, -2, 0] }}
+              transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
+              className="relative rounded-2xl border border-white/25 bg-white/10 p-6 shadow-[0_30px_60px_-35px_rgba(16,185,129,0.85)] backdrop-blur-xl"
+            >
+              <div className="mb-4 flex items-center justify-between">
+                <p className="text-lg font-semibold text-white">Launch-Ready Creative Stack</p>
+                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300/35 bg-emerald-400/20 px-3 py-1 text-xs font-semibold text-emerald-100">
+                  <Zap className="h-3.5 w-3.5" /> 48h Response
+                </span>
               </div>
-            )}
-          </div>
+              <p className="text-sm text-slate-200">A premium client-facing contact experience with animated visual depth and conversion-focused UX details.</p>
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                {contactHighlights.map((item, i) => (
+                  <motion.div
+                    key={item}
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.07, duration: 0.35 }}
+                    viewport={{ once: true }}
+                    className="rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-slate-100"
+                  >
+                    {item}
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, -10, 0], x: [0, 6, 0] }}
+              transition={{ duration: 7.3, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-5 right-6 rounded-xl border border-white/25 bg-white/15 px-4 py-2 backdrop-blur-lg"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-100">3D Motion Layer</p>
+            </motion.div>
+            <motion.div
+              animate={{ y: [0, -8, 0], x: [0, -5, 0] }}
+              transition={{ duration: 6.6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-4 left-6 rounded-xl border border-cyan-300/35 bg-cyan-400/15 px-4 py-2 backdrop-blur-lg"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-cyan-100">Animated Experience</p>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
