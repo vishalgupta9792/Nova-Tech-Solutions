@@ -80,14 +80,14 @@ const upiIntent = (name: string, amount: number) => `upi://pay?pa=${UPI_ID}&pn=N
 const upiQr = (name: string, amount: number) =>
   `https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=${encodeURIComponent(upiIntent(name, amount))}`;
 
-function Title({ tag, head, desc }: { tag: string; head: string; desc: string }) {
+function Title({ tag, head, desc }: { tag: string; head: string; desc?: string }) {
   return (
     <div className="mb-10 max-w-3xl">
       <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-300/50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-700 dark:border-white/20 dark:text-slate-200">
         <Rocket className="h-3.5 w-3.5" />{tag}
       </p>
       <h2 className="text-3xl font-bold leading-tight md:text-4xl">{head}</h2>
-      <p className="mt-4 text-base text-slate-700 dark:text-slate-300">{desc}</p>
+      {desc ? <p className="mt-4 text-base text-slate-700 dark:text-slate-300">{desc}</p> : null}
     </div>
   );
 }
@@ -469,7 +469,7 @@ export default function HomePage() {
       </RevealSection>
 
       <RevealSection id="contact" className="section-shell relative z-10">
-        <Title tag="Contact" head="Premium Inquiry Experience" desc="High-converting contact flow with bold visual storytelling and fast response promise." />
+        <Title tag="Contact" head="Premium Inquiry Experience" />
         <div className="grid gap-6 md:grid-cols-2 md:items-start">
           <motion.form
             onSubmit={submit}
