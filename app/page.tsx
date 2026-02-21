@@ -28,7 +28,7 @@ const serviceCards = [
 ];
 const projects = [
   { name: "Greenfield International School", city: "Noida", outcome: "+42% inquiry growth in 5 months", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Sunrise Public School", city: "Lucknow", outcome: "ERP + results unified across 2 campuses", img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Sunrise Public School", city: "Lucknow", outcome: "ERP + results unified across 2 campuses", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80" },
   { name: "Maple Leaf Academy", city: "Jaipur", outcome: "Admissions website + social media execution", img: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80" }
 ];
 const plans = [
