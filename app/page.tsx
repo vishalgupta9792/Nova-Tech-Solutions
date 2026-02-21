@@ -2,7 +2,7 @@
 
 import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Layers, Rocket, School, Sparkles, Wallet, Wind, Zap } from "lucide-react";
+import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Flame, Layers, Rocket, School, Sparkles, Wallet, Wind, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 type Lead = { id: string; name: string; school: string; phone: string; service: string; plan: string; createdAt: string };
@@ -31,9 +31,9 @@ const projects = [
   { name: "Maple Leaf Academy", city: "Jaipur", outcome: "Admissions website + social media execution", img: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80" }
 ];
 const plans = [
-  { name: "Basic Plan", sub: "Digital Presence", amount: 11000, points: ["Website Setup", "SEO Basics", "Hosting", "Email Support"] },
-  { name: "Professional Plan", sub: "Smart School System", amount: 20000, points: ["Website + ERP Core", "Result Module", "Parent Comms", "Priority Support"], featured: true },
-  { name: "Premium Plan", sub: "Complete Digital Management", amount: 40000, points: ["Full Stack Delivery", "SMM Execution", "Security + Backups", "Dedicated Manager"] }
+  { name: "Basic Plan", sub: "Digital Presence", original: 15000, amount: 12000, discount: 3000, points: ["Website Setup", "SEO Basics", "Hosting", "Email Support"] },
+  { name: "Professional Plan", sub: "Smart School System", original: 25000, amount: 20000, discount: 5000, points: ["Website + ERP Core", "Result Module", "Parent Comms", "Priority Support"], featured: true },
+  { name: "Premium Plan", sub: "Complete Digital Management", original: 50000, amount: 45000, discount: 5000, points: ["Full Stack Delivery", "SMM Execution", "Security + Backups", "Dedicated Manager"] }
 ];
 const expertise = [
   { label: "UI/UX Engineering", icon: BookOpenCheck },
@@ -139,6 +139,8 @@ export default function HomePage() {
   const [msg, setMsg] = useState("");
   const [leads, setLeads] = useState<Lead[]>([]);
   const [form, setForm] = useState({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
+  const [dealEndsAt] = useState(() => Date.now() + 1000 * 60 * 60 * 48);
+  const [timeLeft, setTimeLeft] = useState(1000 * 60 * 60 * 48);
   const { scrollYProgress } = useScroll();
   const orbLeftY = useTransform(scrollYProgress, [0, 1], [-30, 180]);
   const orbRightY = useTransform(scrollYProgress, [0, 1], [-10, 120]);
@@ -148,6 +150,12 @@ export default function HomePage() {
     if (raw) setLeads(JSON.parse(raw));
   }, []);
   useEffect(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(leads)); }, [leads]);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(Math.max(0, dealEndsAt - Date.now()));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [dealEndsAt]);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -155,6 +163,9 @@ export default function HomePage() {
     setForm({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
     setMsg("Lead saved. Team will connect shortly.");
   };
+  const hours = String(Math.floor(timeLeft / (1000 * 60 * 60))).padStart(2, "0");
+  const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
+  const seconds = String(Math.floor((timeLeft % (1000 * 60)) / 1000)).padStart(2, "0");
 
   return (
     <main className="relative overflow-hidden">
@@ -265,10 +276,42 @@ export default function HomePage() {
 
       <RevealSection id="pricing" className="section-shell relative z-10">
         <Title tag="Pricing" head="Clear Plans with Fast Decision Flow" desc="Animated cards and direct payment intent links to reduce friction." />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-rose-300/35 bg-gradient-to-r from-rose-500/15 via-orange-500/10 to-emerald-500/10 px-4 py-3 backdrop-blur"
+        >
+          <p className="inline-flex items-center gap-2 text-sm font-semibold text-rose-100">
+            <Flame className="h-4 w-4 text-rose-300" /> Hot Offer Live
+          </p>
+          <p className="rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-sm font-bold tracking-[0.08em] text-white">
+            Ends in {hours}:{minutes}:{seconds}
+          </p>
+        </motion.div>
         <div className="grid gap-5 lg:grid-cols-3">
           {plans.map((p, i) => (
-            <motion.article key={p.name} custom={i} variants={reveal} initial="hidden" whileInView="show" whileHover={{ y: -8, scale: 1.01 }} className={`glass p-7 ${p.featured ? "border-emerald-300/50 bg-emerald-300/10" : ""}`}>
-              <p className="text-sm uppercase tracking-[0.12em] text-slate-600 dark:text-slate-300">{p.name}</p><h3 className="mt-2 text-2xl font-bold">{p.sub}</h3><p className="mt-4 text-3xl font-extrabold">{fmt(p.amount)}</p>
+            <motion.article
+              key={p.name}
+              custom={i}
+              variants={reveal}
+              initial="hidden"
+              whileInView="show"
+              whileHover={{ y: -10, scale: 1.015, rotateX: 1 }}
+              className={`glass relative overflow-hidden p-7 ${p.featured ? "border-emerald-300/50 bg-emerald-300/10" : ""}`}
+            >
+              <motion.div
+                animate={{ opacity: [0.2, 0.55, 0.2] }}
+                transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
+                className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-rose-400/25 blur-2xl"
+              />
+              <p className="text-sm uppercase tracking-[0.12em] text-slate-600 dark:text-slate-300">{p.name}</p>
+              <h3 className="mt-2 text-2xl font-bold">{p.sub}</h3>
+              <div className="mt-4 flex items-center gap-2">
+                <span className="rounded-full border border-rose-300/40 bg-rose-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-rose-200">Save {fmt(p.discount)}</span>
+                <span className="text-sm font-semibold text-slate-500 line-through dark:text-slate-400">{fmt(p.original)}</span>
+              </div>
+              <p className="mt-2 text-4xl font-extrabold">{fmt(p.amount)}</p>
               <div className="my-5 h-px bg-slate-300/40 dark:bg-white/20" />
               <ul className="space-y-2">{p.points.map((x) => <li key={x} className="inline-flex items-start gap-2 text-sm"><BadgeCheck className="mt-0.5 h-4 w-4 text-emerald-500" />{x}</li>)}</ul>
               <div className="mt-6 grid gap-2"><a href={upiQr(p.name, p.amount)} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white"><Wallet className="h-4 w-4" />Scan & Pay (UPI QR)</a><a href="#contact" className="rounded-xl border border-slate-300/50 px-4 py-3 text-center text-sm font-semibold dark:border-white/20">Book Consultation</a></div>
