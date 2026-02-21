@@ -11,7 +11,13 @@ const ADMIN_PASS = "novaadmin123";
 const UPI_ID = "novatechsolutions@okicici";
 const reveal = { hidden: { opacity: 0, y: 24 }, show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.55 } }) };
 
-const nav = ["Services", "Projects", "Technology", "Industries", "Pricing"];
+const nav = [
+  { label: "Services", href: "#services" },
+  { label: "Projects", href: "#projects" },
+  { label: "Technology", href: "#technology" },
+  { label: "Industries", href: "#industries" },
+  { label: "Pricing", href: "#pricing" }
+];
 const serviceCards = [
   { title: "School Website Development", text: "Admissions-focused websites for modern school brands." },
   { title: "Complete School ERP System", text: "Operations, academics, fees, attendance, communication." },
@@ -37,6 +43,16 @@ const expertise = [
   { label: "Dedicated Project Team", icon: BriefcaseBusiness },
   { label: "Leadership Dashboards", icon: BarChart3 },
   { label: "Continuous Optimization", icon: Rocket }
+];
+const technologyTicker = [
+  "Next.js",
+  "React",
+  "TypeScript",
+  "Tailwind CSS",
+  "Framer Motion",
+  "Cloud Hosting",
+  "School ERP",
+  "Result Automation"
 ];
 const faqs = [
   { q: "How fast can you launch a school website?", a: "In most cases, 2 to 4 weeks with content and approvals ready." },
@@ -90,35 +106,74 @@ export default function HomePage() {
 
   return (
     <main className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(16,185,129,0.18),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(59,130,246,0.2),transparent_40%),linear-gradient(135deg,rgba(248,250,252,0.95),rgba(241,245,249,0.92))] dark:bg-hero-glow" />
       <div className="pointer-events-none absolute -left-20 top-24 h-80 w-80 rounded-full bg-emerald-400/20 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 top-8 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
 
       <header className="section-shell relative z-10 py-7">
-        <nav className="glass flex flex-wrap items-center justify-between gap-3 px-5 py-3">
-          <div><p className="text-lg font-bold">Nova Tech Solutions</p><p className="text-xs text-slate-700 dark:text-slate-300">Complete Digital Management for Modern Schools</p></div>
-          <div className="flex flex-wrap items-center gap-2">{nav.map((n) => <span key={n} className="rounded-full border border-slate-300/50 px-3 py-1 text-xs dark:border-white/20">{n}</span>)}</div>
-          <div className="flex items-center gap-2"><a href="#contact" className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white">Get Free Demo</a><ThemeToggle /></div>
+        <nav className="glass flex flex-wrap items-center justify-between gap-3 px-5 py-3 text-slate-900 dark:text-slate-100">
+          <motion.a
+            href="#"
+            whileHover={{ y: -1, scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            className="rounded-xl border border-slate-300/55 bg-white/45 px-3 py-2 transition-colors hover:bg-white/70 dark:border-white/20 dark:bg-white/10 dark:hover:bg-white/15"
+          >
+            <p className="text-lg font-bold text-slate-900 dark:text-white">Nova Tech Solutions</p>
+            <p className="text-xs text-slate-700 dark:text-slate-200">Complete Digital Management for Modern Schools</p>
+          </motion.a>
+          <div className="order-3 w-full md:order-none md:w-auto">
+            <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 py-1">
+              {nav.map((item) => (
+                <motion.a
+                  key={item.label}
+                  href={item.href}
+                  whileHover={{ y: -2, scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                  className="group relative shrink-0 rounded-full border border-slate-300/60 bg-white/45 px-4 py-2 text-xs font-semibold tracking-[0.03em] text-slate-800 transition-colors hover:text-slate-950 dark:border-white/25 dark:bg-white/10 dark:text-slate-100 dark:hover:text-white"
+                >
+                  <span className="relative z-10">{item.label}</span>
+                  <span className="pointer-events-none absolute inset-x-3 bottom-1 h-px origin-left scale-x-0 bg-emerald-400 transition-transform duration-300 group-hover:scale-x-100" />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <motion.a
+              href="#contact"
+              whileHover={{ y: -2, scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 320, damping: 22 }}
+              className="group relative overflow-hidden rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-12px_rgba(16,185,129,0.9)]"
+            >
+              <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-emerald-300/0 via-white/35 to-emerald-300/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <span className="relative">Get Free Demo</span>
+            </motion.a>
+            <motion.div whileHover={{ rotate: 18 }} transition={{ type: "spring", stiffness: 280, damping: 18 }}>
+              <ThemeToggle />
+            </motion.div>
+          </div>
         </nav>
       </header>
 
       <section className="section-shell relative z-10 pt-4 md:pt-8">
         <div className="glass grid items-center gap-7 overflow-hidden px-7 py-10 md:grid-cols-2 md:px-10">
           <div>
-            <p className="mb-4 inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-white">Top Rated EdTech Partner</p>
-            <h1 className="text-4xl font-extrabold leading-tight text-white md:text-6xl">A Complete Digital Infrastructure Partner for Private Schools</h1>
-            <p className="mt-5 max-w-xl text-base text-slate-200 md:text-lg">Design, engineering, ERP, communication, and school growth systems delivered as one unified team.</p>
+            <p className="mb-4 inline-flex rounded-full border border-slate-300/60 bg-white/50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-800 dark:border-white/25 dark:bg-white/10 dark:text-white">Top Rated EdTech Partner</p>
+            <h1 className="text-4xl font-extrabold leading-tight text-slate-900 dark:text-white md:text-6xl">A Complete Digital Infrastructure Partner for Private Schools</h1>
+            <p className="mt-5 max-w-xl text-base text-slate-700 dark:text-slate-200 md:text-lg">Design, engineering, ERP, communication, and school growth systems delivered as one unified team.</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white">Get Free Demo <ArrowRight className="h-4 w-4" /></a>
-              <a href="#pricing" className="rounded-full border border-white/35 px-6 py-3 text-sm font-semibold text-white">Book Consultation</a>
+              <a href="#pricing" className="rounded-full border border-slate-400/60 px-6 py-3 text-sm font-semibold text-slate-800 dark:border-white/35 dark:text-white">Book Consultation</a>
             </div>
-            <div className="mt-6 grid max-w-md grid-cols-3 gap-2 text-center text-xs text-white"><span className="rounded-lg border border-white/20 py-2">100+ Schools</span><span className="rounded-lg border border-white/20 py-2">99.9% Uptime</span><span className="rounded-lg border border-white/20 py-2">Fast Support</span></div>
+            <div className="mt-6 grid max-w-md grid-cols-3 gap-2 text-center text-xs text-slate-800 dark:text-white"><span className="rounded-lg border border-slate-300/60 py-2 dark:border-white/20">100+ Schools</span><span className="rounded-lg border border-slate-300/60 py-2 dark:border-white/20">99.9% Uptime</span><span className="rounded-lg border border-slate-300/60 py-2 dark:border-white/20">Fast Support</span></div>
           </div>
           <motion.img initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1600&q=80" alt="School digital transformation" className="h-[420px] w-full rounded-2xl object-cover" />
         </div>
       </section>
 
-      <section className="section-shell relative z-10">
+      <section id="industries" className="section-shell relative z-10">
         <Title tag="Who We Are" head="Agency-Grade Delivery with Product Thinking" desc="KrishaWeb style funnel follow karte hue: strong proof, rich projects, clear expertise, and conversion-oriented contact flow." />
         <div className="grid gap-4 md:grid-cols-4">
           {[["8+", "Years Experience"], ["20+", "Specialists"], ["300+", "Projects"], ["4.8/5", "Client Rating"]].map((s, i) => (
@@ -127,7 +182,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section-shell relative z-10">
+      <section id="services" className="section-shell relative z-10">
         <Title tag="Services" head="High-Impact Solutions for School Growth" desc="Structured delivery model across brand, engineering, operations, and automation." />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {serviceCards.map((s, i) => (
@@ -138,7 +193,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section-shell relative z-10">
+      <section id="projects" className="section-shell relative z-10">
         <Title tag="Projects" head="School Websites and Platforms Delivered" desc="Selected school projects that demonstrate brand, UX, and system integration quality." />
         <div className="grid gap-5 md:grid-cols-3">
           {projects.map((p, i) => (
@@ -164,8 +219,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section-shell relative z-10">
+      <section id="technology" className="section-shell relative z-10">
         <Title tag="Expertise" head="Technology + Domain + Execution" desc="Focused execution approach similar high-performing service companies." />
+        <div className="glass mb-4 overflow-hidden py-3">
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 16, ease: "linear", repeat: Infinity }}
+            className="flex w-max gap-8 px-4 text-sm font-semibold uppercase tracking-[0.1em] text-slate-700 dark:text-slate-200"
+          >
+            {[...technologyTicker, ...technologyTicker].map((item, i) => (
+              <span key={`${item}-${i}`} className="whitespace-nowrap">
+                {item}
+              </span>
+            ))}
+          </motion.div>
+        </div>
         <div className="grid gap-4 md:grid-cols-3">
           {expertise.map((item, i) => (
             <motion.div key={item.label} custom={i} variants={reveal} initial="hidden" whileInView="show" className="glass flex items-center gap-3 p-5">
