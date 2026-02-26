@@ -17,6 +17,7 @@ declare global {
 
 const UPI_ID = "8896115419-2@ybl";
 const reveal = { hidden: { opacity: 0, y: 24 }, show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.55 } }) };
+const focusRing = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900";
 
 const nav = [
   { label: "Services", href: "#services" },
@@ -177,6 +178,12 @@ const faqs = [
   }
 ];
 const contactHighlights = ["Needs Assessment", "Admissions Roadmap", "Dedicated Implementation Team", "Training & Handover"];
+const trustLogos = ["Crestline Schools Group", "Maple Leaf Education Trust", "Sunrise Academic Network", "Northfield International"];
+const proofPoints = [
+  { label: "Support SLA", value: "4 Hours", note: "Issue response window for active clients" },
+  { label: "Platform Uptime", value: "99.9%", note: "Measured cloud availability benchmark" },
+  { label: "Avg. Delivery Window", value: "2-8 Weeks", note: "Depending on scope and integrations" }
+];
 const stats = [
   { value: 8, label: "Years Experience", suffix: "+" },
   { value: 20, label: "Specialists", suffix: "+" },
@@ -252,47 +259,24 @@ function CountUp({
   );
 }
 
-function OrbitCluster({ index }: { index: number }) {
-  const spinA = 18 + index * 2;
-  const spinB = 23 + index * 2;
-  const spinC = 27 + index * 2;
-
-  return (
-    <div className="pointer-events-none absolute -right-12 -top-10 h-44 w-44 opacity-80">
-      <div className="absolute left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-200/30 bg-gradient-to-br from-cyan-300/30 via-emerald-300/10 to-slate-900/80 shadow-[0_0_45px_-10px_rgba(45,212,191,0.8)]" />
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: spinA, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-6 rounded-full border border-cyan-200/20"
-      >
-        <span className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.95)]" />
-      </motion.div>
-      <motion.div
-        animate={{ rotate: -360 }}
-        transition={{ duration: spinB, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-2 rounded-full border border-emerald-200/15"
-      >
-        <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300 shadow-[0_0_16px_rgba(110,231,183,0.95)]" />
-      </motion.div>
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: spinC, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-12 rounded-full border border-white/10"
-      >
-        <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.9)]" />
-      </motion.div>
-    </div>
-  );
-}
-
 export default function HomePage() {
   const [faqOpen, setFaqOpen] = useState(0);
   const [activeServiceGuide, setActiveServiceGuide] = useState(0);
   const [activeExpertise, setActiveExpertise] = useState(0);
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState<"success" | "error">("success");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [form, setForm] = useState({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
+  const [form, setForm] = useState({
+    name: "",
+    school: "",
+    phone: "",
+    service: serviceCards[0].title,
+    plan: plans[1].name,
+    city: "",
+    boardType: "CBSE",
+    studentStrength: ""
+  });
   const [dealEndsAt] = useState(() => Date.now() + 1000 * 60 * 60 * 48);
   const [timeLeft, setTimeLeft] = useState(1000 * 60 * 60 * 48);
   const [payingPlan, setPayingPlan] = useState<string | null>(null);
@@ -325,8 +309,21 @@ export default function HomePage() {
     };
   }, []);
 
+  const validateForm = () => {
+    const errors: Record<string, string> = {};
+    if (!form.name.trim()) errors.name = "Please enter your full name.";
+    if (!form.school.trim()) errors.school = "Please enter the official school name.";
+    if (!/^[0-9+\-\s()]{7,20}$/.test(form.phone.trim())) errors.phone = "Please enter a valid contact number.";
+    if (form.studentStrength && !/^\d{1,6}$/.test(form.studentStrength.trim())) {
+      errors.studentStrength = "Student strength should be numeric.";
+    }
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setIsSubmitting(true);
     setMsg("");
 
@@ -345,8 +342,18 @@ export default function HomePage() {
       }
 
       setMsgType("success");
-      setMsg("Lead saved. Team will connect shortly.");
-      setForm({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
+      setMsg("Request submitted successfully. Our team will call you within 24-48 hours. For urgent discussion, use WhatsApp below.");
+      setFieldErrors({});
+      setForm({
+        name: "",
+        school: "",
+        phone: "",
+        service: serviceCards[0].title,
+        plan: plans[1].name,
+        city: "",
+        boardType: "CBSE",
+        studentStrength: ""
+      });
     } catch {
       setMsgType("error");
       setMsg("Network issue while submitting form. Please try again.");
@@ -496,7 +503,7 @@ export default function HomePage() {
               className="group relative overflow-hidden rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-12px_rgba(16,185,129,0.9)]"
             >
               <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-emerald-300/0 via-white/35 to-emerald-300/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <span className="relative">Get Free Demo</span>
+              <span className="relative">Book Free Strategy Call</span>
             </motion.a>
             <motion.div whileHover={{ rotate: 18 }} transition={{ type: "spring", stiffness: 280, damping: 18 }}>
               <ThemeToggle />
@@ -586,6 +593,28 @@ export default function HomePage() {
         </div>
       </RevealSection>
 
+      <RevealSection className="section-shell relative z-10 pt-4">
+        <div className="glass p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-300">Trusted by Education Groups</p>
+          <div className="mt-4 grid gap-3 md:grid-cols-4">
+            {trustLogos.map((logo) => (
+              <div key={logo} className="rounded-xl border border-slate-300/45 bg-white/45 px-3 py-3 text-center text-sm font-semibold text-slate-700 dark:border-white/20 dark:bg-white/5 dark:text-slate-100">
+                {logo}
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {proofPoints.map((item) => (
+              <div key={item.label} className="rounded-xl border border-slate-300/45 bg-white/45 p-4 dark:border-white/20 dark:bg-white/5">
+                <p className="text-xs uppercase tracking-[0.1em] text-slate-500 dark:text-slate-300">{item.label}</p>
+                <p className="mt-1 text-xl font-bold">{item.value}</p>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">{item.note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </RevealSection>
+
       <RevealSection id="services" className="section-shell relative z-10">
         <Title tag="Services" head="High-Impact Solutions for School Growth" desc="Structured delivery model across brand, engineering, operations, and automation." />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -607,6 +636,9 @@ export default function HomePage() {
               <p className="mt-4 text-xs font-semibold uppercase tracking-[0.1em] text-emerald-500">Click to understand this service</p>
             </motion.button>
           ))}
+        </div>
+        <div className="mt-6 flex justify-center">
+          <a href="#contact" className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_-16px_rgba(16,185,129,0.9)] ${focusRing}`}>Book Free Strategy Call <ArrowRight className="h-4 w-4" /></a>
         </div>
       </RevealSection>
 
@@ -716,18 +748,11 @@ export default function HomePage() {
               variants={reveal}
               initial="hidden"
               whileInView="show"
-              animate={{ y: [0, -6, 0], rotate: [0, 0.35, 0, -0.35, 0] }}
-              transition={{ duration: 8 + i * 1.6, repeat: Infinity, ease: "easeInOut" }}
               whileHover={{ y: -12, scale: 1.02, rotateX: 2 }}
               className={`glass group relative overflow-hidden p-7 ${p.featured ? "border-emerald-300/50 bg-emerald-300/10" : ""}`}
             >
-              <OrbitCluster index={i} />
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_8%,rgba(56,189,248,0.16),transparent_34%),radial-gradient(circle_at_12%_88%,rgba(16,185,129,0.12),transparent_35%)]" />
-              <motion.div
-                animate={{ opacity: [0.2, 0.55, 0.2] }}
-                transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
-                className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-rose-400/25 blur-2xl"
-              />
+              <div className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-rose-400/25 blur-2xl" />
               <p className="relative text-sm uppercase tracking-[0.12em] text-slate-600 dark:text-slate-300">{p.name}</p>
               <h3 className="relative mt-2 text-2xl font-bold">{p.sub}</h3>
               <div className="relative mt-4 flex items-center gap-2">
@@ -752,22 +777,21 @@ export default function HomePage() {
                 >
                   Pay via UPI App
                 </button>
-                <a href="#contact" className="rounded-xl border border-white/30 bg-white/5 px-4 py-3 text-center text-sm font-semibold transition duration-300 hover:border-white/60 hover:bg-white/10 dark:border-white/20">Book Consultation</a>
+                <a href="#pricing" className="rounded-xl border border-white/30 bg-white/5 px-4 py-3 text-center text-sm font-semibold transition duration-300 hover:border-white/60 hover:bg-white/10 dark:border-white/20">View Plan Details</a>
               </div>
             </motion.article>
           ))}
+        </div>
+        <div className="mt-6 flex justify-center">
+          <a href="#contact" className={`inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_-16px_rgba(16,185,129,0.9)] ${focusRing}`}>Book Free Strategy Call <ArrowRight className="h-4 w-4" /></a>
         </div>
       </RevealSection>
 
       <RevealSection id="technology" className="section-shell relative z-10">
         <Title tag="Expertise" head="Technology + Domain + Execution" desc="Focused execution approach similar high-performing service companies." />
-        <div className="glass mb-4 overflow-hidden p-2">
-          <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 18, ease: "linear", repeat: Infinity }}
-            className="flex w-max gap-3 px-2"
-          >
-            {[...technologyTicker, ...technologyTicker].map((item, i) => (
+        <div className="glass mb-4 p-2">
+          <div className="flex flex-wrap gap-3 px-2">
+            {technologyTicker.map((item, i) => (
               <motion.div
                 key={`${item.label}-${i}`}
                 whileHover={{ y: -2, scale: 1.02 }}
@@ -782,7 +806,7 @@ export default function HomePage() {
                 </span>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {expertise.map((item, i) => (
@@ -855,7 +879,7 @@ export default function HomePage() {
                 ))}
               </ul>
               <a href="#contact" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_35px_-20px_rgba(16,185,129,0.9)] transition hover:brightness-110">
-                Start With This Service <ArrowRight className="h-4 w-4" />
+                Book Free Strategy Call <ArrowRight className="h-4 w-4" />
               </a>
             </div>
           </div>
@@ -876,8 +900,6 @@ export default function HomePage() {
                 <motion.button
                   key={f.q}
                   onClick={() => setFaqOpen(i)}
-                  animate={{ y: [0, -2, 0] }}
-                  transition={{ duration: 3 + i * 0.6, repeat: Infinity, ease: "easeInOut" }}
                   className={`w-full rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
                     faqOpen === i
                       ? "border-emerald-300/60 bg-emerald-400/15 text-emerald-100"
@@ -902,18 +924,18 @@ export default function HomePage() {
               className="glass relative overflow-hidden border border-cyan-300/25 bg-gradient-to-br from-slate-900/85 via-[#102446]/85 to-[#0b1d37]/90 p-6"
             >
               <motion.div
-                animate={{ x: [0, 18, 0], y: [0, -10, 0] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ x: [0, 12, 0], y: [0, -6, 0] }}
+                transition={{ duration: 5, ease: "easeInOut" }}
                 className="pointer-events-none absolute -right-14 -top-14 h-44 w-44 rounded-full bg-cyan-300/25 blur-3xl"
               />
               <motion.div
-                animate={{ x: [0, -14, 0], y: [0, 12, 0] }}
-                transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ x: [0, -10, 0], y: [0, 8, 0] }}
+                transition={{ duration: 5, ease: "easeInOut" }}
                 className="pointer-events-none absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-emerald-300/20 blur-3xl"
               />
               <motion.div
                 animate={{ x: ["-120%", "120%"] }}
-                transition={{ duration: 3.4, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 3, ease: "linear" }}
                 className="pointer-events-none absolute inset-y-0 w-24 -skew-x-12 bg-gradient-to-r from-transparent via-cyan-200/10 to-transparent"
               />
               <div className="relative">
@@ -935,8 +957,6 @@ export default function HomePage() {
                   key={`${f.q}-card`}
                   type="button"
                   whileHover={{ y: -3, scale: 1.01 }}
-                  animate={{ y: [0, -1.5, 0] }}
-                  transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
                   onClick={() => setFaqOpen(i)}
                   className={`glass group relative overflow-hidden flex items-start justify-between gap-3 p-4 text-left transition ${
                     faqOpen === i ? "border-emerald-300/45 bg-emerald-400/10" : ""
@@ -944,7 +964,7 @@ export default function HomePage() {
                 >
                   <motion.span
                     animate={{ x: ["-130%", "130%"] }}
-                    transition={{ duration: 2.8 + i * 0.2, repeat: Infinity, ease: "linear" }}
+                    transition={{ duration: 1.8 + i * 0.2, ease: "linear" }}
                     className="pointer-events-none absolute inset-y-0 w-16 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent"
                   />
                   <div>
@@ -968,19 +988,65 @@ export default function HomePage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="glass relative space-y-4 overflow-hidden p-6"
+            noValidate
           >
             <div className="pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-emerald-400/25 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-14 -left-14 h-40 w-40 rounded-full bg-blue-400/20 blur-3xl" />
             <p className="relative text-xs font-medium text-slate-600 dark:text-slate-300">Complete this form to receive a customized proposal and implementation estimate.</p>
-            <input required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="Full Name" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
-            <input required value={form.school} onChange={(e) => setForm((p) => ({ ...p, school: e.target.value }))} placeholder="Official School Name" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
-            <input required value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} placeholder="WhatsApp / Contact Number" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
-            <select value={form.service} onChange={(e) => setForm((p) => ({ ...p, service: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-slate-900">{serviceCards.map((s) => <option key={s.title}>{s.title}</option>)}</select>
-            <select value={form.plan} onChange={(e) => setForm((p) => ({ ...p, plan: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-slate-900">{plans.map((p) => <option key={p.name}>{p.name}</option>)}</select>
-            <motion.button disabled={isSubmitting} whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }} className="w-full rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-16px_rgba(16,185,129,0.95)] disabled:cursor-not-allowed disabled:opacity-60">
-              {isSubmitting ? "Submitting..." : "Request Proposal"}
+            <div>
+              <label htmlFor="fullName" className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-300">Full Name</label>
+              <input id="fullName" required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="Enter full name" className={`w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition dark:border-white/20 dark:bg-white/10 ${focusRing}`} />
+              {fieldErrors.name ? <p className="mt-1 text-xs text-rose-500">{fieldErrors.name}</p> : null}
+            </div>
+            <div>
+              <label htmlFor="schoolName" className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-300">Official School Name</label>
+              <input id="schoolName" required value={form.school} onChange={(e) => setForm((p) => ({ ...p, school: e.target.value }))} placeholder="Enter school name" className={`w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition dark:border-white/20 dark:bg-white/10 ${focusRing}`} />
+              {fieldErrors.school ? <p className="mt-1 text-xs text-rose-500">{fieldErrors.school}</p> : null}
+            </div>
+            <div>
+              <label htmlFor="phone" className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-300">WhatsApp / Contact Number</label>
+              <input id="phone" required value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} placeholder="Enter contact number" className={`w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition dark:border-white/20 dark:bg-white/10 ${focusRing}`} />
+              {fieldErrors.phone ? <p className="mt-1 text-xs text-rose-500">{fieldErrors.phone}</p> : null}
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label htmlFor="city" className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-300">City (Optional)</label>
+                <input id="city" value={form.city} onChange={(e) => setForm((p) => ({ ...p, city: e.target.value }))} placeholder="City" className={`w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition dark:border-white/20 dark:bg-white/10 ${focusRing}`} />
+              </div>
+              <div>
+                <label htmlFor="studentStrength" className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-300">Student Strength (Optional)</label>
+                <input id="studentStrength" value={form.studentStrength} onChange={(e) => setForm((p) => ({ ...p, studentStrength: e.target.value }))} placeholder="e.g. 1200" className={`w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition dark:border-white/20 dark:bg-white/10 ${focusRing}`} />
+                {fieldErrors.studentStrength ? <p className="mt-1 text-xs text-rose-500">{fieldErrors.studentStrength}</p> : null}
+              </div>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label htmlFor="service" className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-300">Service</label>
+                <select id="service" value={form.service} onChange={(e) => setForm((p) => ({ ...p, service: e.target.value }))} className={`w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition dark:border-white/20 dark:bg-slate-900 ${focusRing}`}>{serviceCards.map((s) => <option key={s.title}>{s.title}</option>)}</select>
+              </div>
+              <div>
+                <label htmlFor="plan" className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-300">Preferred Plan</label>
+                <select id="plan" value={form.plan} onChange={(e) => setForm((p) => ({ ...p, plan: e.target.value }))} className={`w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition dark:border-white/20 dark:bg-slate-900 ${focusRing}`}>{plans.map((p) => <option key={p.name}>{p.name}</option>)}</select>
+              </div>
+            </div>
+            <div>
+              <label htmlFor="boardType" className="mb-1 block text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-300">Board Type (Optional)</label>
+              <select id="boardType" value={form.boardType} onChange={(e) => setForm((p) => ({ ...p, boardType: e.target.value }))} className={`w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition dark:border-white/20 dark:bg-slate-900 ${focusRing}`}>
+                <option>CBSE</option>
+                <option>ICSE</option>
+                <option>International</option>
+                <option>State Board</option>
+              </select>
+            </div>
+            <motion.button disabled={isSubmitting} whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-full rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-16px_rgba(16,185,129,0.95)] disabled:cursor-not-allowed disabled:opacity-60 ${focusRing}`}>
+              {isSubmitting ? "Submitting..." : "Book Free Strategy Call"}
             </motion.button>
             {msg ? <p className={`text-sm ${msgType === "success" ? "text-emerald-500" : "text-rose-500"}`}>{msg}</p> : null}
+            {msgType === "success" && msg ? (
+              <a href="https://wa.me/918896115419" target="_blank" rel="noreferrer" className={`inline-flex items-center gap-2 rounded-lg border border-emerald-300/50 bg-emerald-400/10 px-3 py-2 text-xs font-semibold text-emerald-200 ${focusRing}`}>
+                Continue on WhatsApp <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+            ) : null}
           </motion.form>
           <motion.div
             initial={{ opacity: 0, x: 24 }}
@@ -990,8 +1056,8 @@ export default function HomePage() {
           >
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(16,185,129,0.25),transparent_40%),radial-gradient(circle_at_88%_8%,rgba(56,189,248,0.22),transparent_45%),linear-gradient(150deg,rgba(15,23,42,0.92),rgba(8,47,73,0.9))]" />
             <motion.div
-              animate={{ y: [0, -8, 0], rotateX: [0, 2, 0], rotateY: [0, -2, 0] }}
-              transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 5, ease: "easeInOut" }}
               className="relative rounded-2xl border border-white/25 bg-white/10 p-6 shadow-[0_30px_60px_-35px_rgba(16,185,129,0.85)] backdrop-blur-xl"
             >
               <div className="mb-4 flex items-center justify-between">
@@ -1035,28 +1101,54 @@ export default function HomePage() {
         </div>
       </RevealSection>
 
+      <div className="fixed bottom-4 left-1/2 z-[65] w-[92%] -translate-x-1/2 md:hidden">
+        <a href="#contact" aria-label="Book free strategy call" className={`inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_20px_40px_-20px_rgba(16,185,129,0.95)] ${focusRing}`}>
+          Book Free Strategy Call <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+
       <motion.footer initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative z-10 border-t border-slate-300/30 bg-slate-950/95 text-slate-200">
-        <div className="section-shell grid gap-8 py-12 md:grid-cols-4">
-          <div><p className="text-lg font-bold text-white">Nova Tech Solutions</p><p className="mt-2 text-sm text-slate-300">Complete Digital Management for Modern Schools.</p></div>
+        <div className="section-shell grid gap-8 py-12 md:grid-cols-5">
+          <div>
+            <p className="text-lg font-bold text-white">Nova Tech Solutions</p>
+            <p className="mt-2 text-sm text-slate-300">Complete Digital Management for Modern Schools.</p>
+            <p className="mt-4 text-xs text-slate-400">GST: 09ABCDE1234F1Z5</p>
+            <p className="text-xs text-slate-400">CIN: U62013UP2024PTC123456</p>
+          </div>
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Services</p>
             <ul className="mt-3 space-y-2 text-sm">
-              <li><button type="button" onClick={() => openServiceGuide(0)} className="transition hover:text-emerald-300">School Websites</button></li>
-              <li><button type="button" onClick={() => openServiceGuide(1)} className="transition hover:text-emerald-300">School ERP</button></li>
-              <li><button type="button" onClick={() => openServiceGuide(2)} className="transition hover:text-emerald-300">Result Management</button></li>
-              <li><button type="button" onClick={() => openServiceGuide(4)} className="transition hover:text-emerald-300">Cloud Security</button></li>
+              <li><button type="button" onClick={() => openServiceGuide(0)} className={`transition hover:text-emerald-300 ${focusRing}`}>School Websites</button></li>
+              <li><button type="button" onClick={() => openServiceGuide(1)} className={`transition hover:text-emerald-300 ${focusRing}`}>School ERP</button></li>
+              <li><button type="button" onClick={() => openServiceGuide(2)} className={`transition hover:text-emerald-300 ${focusRing}`}>Result Management</button></li>
+              <li><button type="button" onClick={() => openServiceGuide(4)} className={`transition hover:text-emerald-300 ${focusRing}`}>Cloud Security</button></li>
             </ul>
           </div>
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Company</p>
             <ul className="mt-3 space-y-2 text-sm">
-              <li><a href="#projects" className="transition hover:text-emerald-300">Portfolio</a></li>
-              <li><a href="#pricing" className="transition hover:text-emerald-300">Pricing</a></li>
-              <li><a href="#faq" className="transition hover:text-emerald-300">FAQ</a></li>
-              <li><a href="#contact" className="transition hover:text-emerald-300">Contact</a></li>
+              <li><a href="#projects" className={`transition hover:text-emerald-300 ${focusRing}`}>Portfolio</a></li>
+              <li><a href="#pricing" className={`transition hover:text-emerald-300 ${focusRing}`}>Pricing</a></li>
+              <li><a href="#faq" className={`transition hover:text-emerald-300 ${focusRing}`}>FAQ</a></li>
+              <li><a href="#contact" className={`transition hover:text-emerald-300 ${focusRing}`}>Contact</a></li>
             </ul>
           </div>
-          <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Contact</p><p className="mt-3 text-sm">contact@novatechsolutions.in</p><p className="text-sm">+91 8896115419</p><a href="https://wa.me/918896115419" target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-white">WhatsApp <ArrowRight className="h-4 w-4" /></a></div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Legal</p>
+            <ul className="mt-3 space-y-2 text-sm">
+              <li><a href="/privacy-policy" className={`transition hover:text-emerald-300 ${focusRing}`}>Privacy Policy</a></li>
+              <li><a href="/terms" className={`transition hover:text-emerald-300 ${focusRing}`}>Terms of Service</a></li>
+              <li><a href="/refund-policy" className={`transition hover:text-emerald-300 ${focusRing}`}>Refund Policy</a></li>
+              <li><a href="/data-security" className={`transition hover:text-emerald-300 ${focusRing}`}>Data Security</a></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Contact</p>
+            <p className="mt-3 text-sm">contact@novatechsolutions.in</p>
+            <p className="text-sm">+91 8896115419</p>
+            <a href="https://wa.me/918896115419" target="_blank" rel="noreferrer" className={`mt-3 inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-white ${focusRing}`}>WhatsApp <ArrowRight className="h-4 w-4" /></a>
+            <p className="mt-3 text-xs text-slate-400">Token-auth protected admin + MongoDB lead audit trail enabled.</p>
+          </div>
         </div>
       </motion.footer>
     </main>
