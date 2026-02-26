@@ -14,9 +14,7 @@ declare global {
   }
 }
 
-type Lead = { id: string; name: string; school: string; phone: string; service: string; plan: string; createdAt: string };
-const STORAGE_KEY = "nova-leads-v2";
-const UPI_ID = "novatechsolutions@okicici";
+const UPI_ID = "8896115419-2@ybl";
 const reveal = { hidden: { opacity: 0, y: 24 }, show: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.55 } }) };
 
 const nav = [
@@ -44,13 +42,64 @@ const plans = [
   { name: "Professional Plan", sub: "Smart School System", original: 25000, amount: 20000, discount: 5000, points: ["Website + ERP Core", "Result Module", "Parent Comms", "Priority Support"], featured: true },
   { name: "Premium Plan", sub: "Complete Digital Management", original: 50000, amount: 45000, discount: 5000, points: ["Full Stack Delivery", "SMM Execution", "Security + Backups", "Dedicated Manager"] }
 ];
-const expertise = [
-  { label: "UI/UX Engineering", icon: BookOpenCheck },
-  { label: "Product-Led Delivery", icon: Layers },
-  { label: "Growth Analytics", icon: ChartSpline },
-  { label: "Dedicated Project Team", icon: BriefcaseBusiness },
-  { label: "Leadership Dashboards", icon: BarChart3 },
-  { label: "Continuous Optimization", icon: Rocket }
+type ExpertiseItem = {
+  label: string;
+  icon: typeof BookOpenCheck;
+  intro: string;
+  manage: string;
+  tracking: string;
+  includes: string[];
+};
+
+const expertise: ExpertiseItem[] = [
+  {
+    label: "UI/UX Engineering",
+    icon: BookOpenCheck,
+    intro: "Admissions-focused interface systems that make parent journeys frictionless.",
+    manage: "Weekly sprint board, wireframe approvals, and conversion-first design handoffs.",
+    tracking: "You get screen-by-screen preview links and progress status for each module.",
+    includes: ["User flow mapping", "Mobile-first design", "Conversion UI polish", "Design QA pass"]
+  },
+  {
+    label: "Product-Led Delivery",
+    icon: Layers,
+    intro: "Execution style where outcomes drive releases, not random task completion.",
+    manage: "Roadmap split into milestones with clear owner, ETA, and delivery checklist.",
+    tracking: "Milestone dashboard shared with school leadership and approval checkpoints.",
+    includes: ["Phase planning", "Risk control", "Sprint demos", "Launch playbook"]
+  },
+  {
+    label: "Growth Analytics",
+    icon: ChartSpline,
+    intro: "Admission and campaign analytics layer that turns traffic into measurable growth.",
+    manage: "UTM strategy, event mapping, and weekly lead-quality diagnostics.",
+    tracking: "Live metrics review: inquiries, source quality, and conversion improvement.",
+    includes: ["Funnel analytics", "Campaign attribution", "Lead scoring", "Monthly growth reports"]
+  },
+  {
+    label: "Dedicated Project Team",
+    icon: BriefcaseBusiness,
+    intro: "Single accountable team instead of fragmented freelancers and delayed coordination.",
+    manage: "PM + designer + developer + QA mapped to your project lifecycle.",
+    tracking: "WhatsApp + dashboard support loop with response SLAs and issue timeline.",
+    includes: ["Named team allocation", "SLA support", "Weekly review calls", "Escalation matrix"]
+  },
+  {
+    label: "Leadership Dashboards",
+    icon: BarChart3,
+    intro: "Principal and management dashboards for decisions without data confusion.",
+    manage: "Data points finalized with school stakeholders before dashboard deployment.",
+    tracking: "Role-based access panels with downloadable reports and trend snapshots.",
+    includes: ["Role-based dashboards", "Summary KPIs", "Report exports", "Department snapshots"]
+  },
+  {
+    label: "Continuous Optimization",
+    icon: Rocket,
+    intro: "Post-launch upgrades to keep admissions, performance, and operations improving.",
+    manage: "Monthly optimization cycle: audit, patch, release, and retrospective.",
+    tracking: "Improvement backlog + before/after impact logs shared with your team.",
+    includes: ["Performance tuning", "Security hardening", "UX improvements", "Feature upgrades"]
+  }
 ];
 const technologyTicker = [
   { label: "React", icon: Atom, iconTone: "text-cyan-300", chipTone: "border-cyan-300/35 bg-cyan-500/10" },
@@ -143,10 +192,45 @@ function CountUp({
   );
 }
 
+function OrbitCluster({ index }: { index: number }) {
+  const spinA = 18 + index * 2;
+  const spinB = 23 + index * 2;
+  const spinC = 27 + index * 2;
+
+  return (
+    <div className="pointer-events-none absolute -right-12 -top-10 h-44 w-44 opacity-80">
+      <div className="absolute left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-200/30 bg-gradient-to-br from-cyan-300/30 via-emerald-300/10 to-slate-900/80 shadow-[0_0_45px_-10px_rgba(45,212,191,0.8)]" />
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: spinA, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-6 rounded-full border border-cyan-200/20"
+      >
+        <span className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.95)]" />
+      </motion.div>
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: spinB, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-2 rounded-full border border-emerald-200/15"
+      >
+        <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300 shadow-[0_0_16px_rgba(110,231,183,0.95)]" />
+      </motion.div>
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: spinC, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-12 rounded-full border border-white/10"
+      >
+        <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.9)]" />
+      </motion.div>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const [faqOpen, setFaqOpen] = useState(0);
+  const [activeExpertise, setActiveExpertise] = useState(0);
   const [msg, setMsg] = useState("");
-  const [leads, setLeads] = useState<Lead[]>([]);
+  const [msgType, setMsgType] = useState<"success" | "error">("success");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
   const [dealEndsAt] = useState(() => Date.now() + 1000 * 60 * 60 * 48);
   const [timeLeft, setTimeLeft] = useState(1000 * 60 * 60 * 48);
@@ -155,11 +239,6 @@ export default function HomePage() {
   const orbLeftY = useTransform(scrollYProgress, [0, 1], [-30, 180]);
   const orbRightY = useTransform(scrollYProgress, [0, 1], [-10, 120]);
 
-  useEffect(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) setLeads(JSON.parse(raw));
-  }, []);
-  useEffect(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(leads)); }, [leads]);
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(Math.max(0, dealEndsAt - Date.now()));
@@ -176,15 +255,39 @@ export default function HomePage() {
     };
   }, []);
 
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
-    setLeads((p) => [{ ...form, id: String(Date.now()), createdAt: new Date().toISOString() }, ...p]);
-    setForm({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
-    setMsg("Lead saved. Team will connect shortly.");
+    setIsSubmitting(true);
+    setMsg("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
+      const data = (await response.json()) as { success?: boolean; error?: string };
+
+      if (!response.ok || !data.success) {
+        setMsgType("error");
+        setMsg(data.error || "Could not submit your requirement. Please try again.");
+        return;
+      }
+
+      setMsgType("success");
+      setMsg("Lead saved. Team will connect shortly.");
+      setForm({ name: "", school: "", phone: "", service: serviceCards[0].title, plan: plans[1].name });
+    } catch {
+      setMsgType("error");
+      setMsg("Network issue while submitting form. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   const hours = String(Math.floor(timeLeft / (1000 * 60 * 60))).padStart(2, "0");
   const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
   const seconds = String(Math.floor((timeLeft % (1000 * 60)) / 1000)).padStart(2, "0");
+  const activeExpertiseItem = expertise[activeExpertise];
 
   const payWithRazorpay = async (plan: typeof plans[number]) => {
     if (!window.Razorpay) {
@@ -253,6 +356,20 @@ export default function HomePage() {
     } finally {
       setPayingPlan(null);
     }
+  };
+
+  const payViaUpiApp = (name: string, amount: number) => {
+    const intentUrl = upiIntent(name, amount);
+    const qrUrl = upiQr(name, amount);
+
+    window.location.href = intentUrl;
+
+    // If deep link handler is unavailable (common on desktop), open QR fallback.
+    setTimeout(() => {
+      if (document.visibilityState === "visible") {
+        window.open(qrUrl, "_blank", "noopener,noreferrer");
+      }
+    }, 900);
   };
 
   return (
@@ -385,36 +502,46 @@ export default function HomePage() {
               variants={reveal}
               initial="hidden"
               whileInView="show"
-              whileHover={{ y: -10, scale: 1.015, rotateX: 1 }}
-              className={`glass relative overflow-hidden p-7 ${p.featured ? "border-emerald-300/50 bg-emerald-300/10" : ""}`}
+              animate={{ y: [0, -6, 0], rotate: [0, 0.35, 0, -0.35, 0] }}
+              transition={{ duration: 8 + i * 1.6, repeat: Infinity, ease: "easeInOut" }}
+              whileHover={{ y: -12, scale: 1.02, rotateX: 2 }}
+              className={`glass group relative overflow-hidden p-7 ${p.featured ? "border-emerald-300/50 bg-emerald-300/10" : ""}`}
             >
+              <OrbitCluster index={i} />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_8%,rgba(56,189,248,0.16),transparent_34%),radial-gradient(circle_at_12%_88%,rgba(16,185,129,0.12),transparent_35%)]" />
               <motion.div
                 animate={{ opacity: [0.2, 0.55, 0.2] }}
                 transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
                 className="absolute -right-12 -top-12 h-24 w-24 rounded-full bg-rose-400/25 blur-2xl"
               />
-              <p className="text-sm uppercase tracking-[0.12em] text-slate-600 dark:text-slate-300">{p.name}</p>
-              <h3 className="mt-2 text-2xl font-bold">{p.sub}</h3>
-              <div className="mt-4 flex items-center gap-2">
+              <p className="relative text-sm uppercase tracking-[0.12em] text-slate-600 dark:text-slate-300">{p.name}</p>
+              <h3 className="relative mt-2 text-2xl font-bold">{p.sub}</h3>
+              <div className="relative mt-4 flex items-center gap-2">
                 <span className="rounded-full border border-rose-300/40 bg-rose-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-rose-200">Save {fmt(p.discount)}</span>
                 <span className="text-sm font-semibold text-slate-500 line-through dark:text-slate-400">{fmt(p.original)}</span>
               </div>
-              <p className="mt-2 text-4xl font-extrabold">{fmt(p.amount)}</p>
-              <div className="my-5 h-px bg-slate-300/40 dark:bg-white/20" />
-              <ul className="space-y-2">{p.points.map((x) => <li key={x} className="inline-flex items-start gap-2 text-sm"><BadgeCheck className="mt-0.5 h-4 w-4 text-emerald-500" />{x}</li>)}</ul>
-              <div className="mt-6 grid gap-2">
+              <p className="relative mt-2 text-4xl font-extrabold">{fmt(p.amount)}</p>
+              <div className="relative my-5 h-px bg-slate-300/40 dark:bg-white/20" />
+              <ul className="relative space-y-2">{p.points.map((x) => <li key={x} className="inline-flex items-start gap-2 text-sm"><BadgeCheck className="mt-0.5 h-4 w-4 text-emerald-500" />{x}</li>)}</ul>
+              <div className="relative mt-6 grid gap-2">
                 <button
                   onClick={() => payWithRazorpay(p)}
                   disabled={payingPlan === p.name}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_34px_-18px_rgba(16,185,129,0.95)] transition duration-300 hover:shadow-[0_22px_38px_-14px_rgba(45,212,191,0.95)] disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <Wallet className="h-4 w-4" />
                   {payingPlan === p.name ? "Starting Razorpay..." : "Pay with Razorpay"}
                 </button>
-                <a href={upiQr(p.name, p.amount)} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300/50 px-4 py-3 text-sm font-semibold dark:border-white/20">
-                  Scan & Pay (UPI QR)
+                <a href={upiQr(p.name, p.amount)} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-cyan-300/40 bg-cyan-400/5 px-4 py-3 text-sm font-semibold transition duration-300 hover:border-cyan-200/70 hover:bg-cyan-400/10 dark:border-cyan-200/30">
+                  Scan & Pay (PhonePe QR)
                 </a>
-                <a href="#contact" className="rounded-xl border border-slate-300/50 px-4 py-3 text-center text-sm font-semibold dark:border-white/20">Book Consultation</a>
+                <button
+                  onClick={() => payViaUpiApp(p.name, p.amount)}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-300/40 bg-emerald-400/5 px-4 py-3 text-sm font-semibold transition duration-300 hover:border-emerald-200/70 hover:bg-emerald-400/10 dark:border-emerald-200/30"
+                >
+                  Pay via UPI App
+                </button>
+                <a href="#contact" className="rounded-xl border border-white/30 bg-white/5 px-4 py-3 text-center text-sm font-semibold transition duration-300 hover:border-white/60 hover:bg-white/10 dark:border-white/20">Book Consultation</a>
               </div>
             </motion.article>
           ))}
@@ -448,12 +575,80 @@ export default function HomePage() {
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {expertise.map((item, i) => (
-            <motion.div key={item.label} custom={i} variants={reveal} initial="hidden" whileInView="show" className="glass flex items-center gap-3 p-5">
-              <item.icon className="h-5 w-5 text-emerald-500" />
-              <p className="text-sm font-medium">{item.label}</p>
-            </motion.div>
+            <motion.button
+              key={item.label}
+              type="button"
+              custom={i}
+              variants={reveal}
+              initial="hidden"
+              whileInView="show"
+              whileHover={{ y: -4, scale: 1.01 }}
+              onClick={() => setActiveExpertise(i)}
+              className={`group relative overflow-hidden rounded-2xl border p-5 text-left transition ${
+                activeExpertise === i
+                  ? "border-emerald-300/55 bg-gradient-to-r from-emerald-400/20 via-cyan-400/10 to-transparent shadow-[0_20px_45px_-28px_rgba(16,185,129,0.9)]"
+                  : "border-white/20 bg-white/5 hover:border-cyan-200/40 hover:bg-white/10"
+              }`}
+            >
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_88%_10%,rgba(56,189,248,0.16),transparent_38%)] opacity-0 transition group-hover:opacity-100" />
+              <div className="relative flex items-center gap-3">
+                <span className={`inline-flex h-10 w-10 items-center justify-center rounded-xl border ${activeExpertise === i ? "border-emerald-200/45 bg-emerald-400/15" : "border-white/20 bg-white/5"}`}>
+                  <item.icon className={`h-5 w-5 ${activeExpertise === i ? "text-emerald-300" : "text-emerald-500"}`} />
+                </span>
+                <div>
+                  <p className="text-base font-semibold">{item.label}</p>
+                  <p className="mt-1 text-xs text-slate-300">Tap to view delivery blueprint</p>
+                </div>
+              </div>
+            </motion.button>
           ))}
         </div>
+
+        <motion.div
+          key={activeExpertiseItem.label}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35 }}
+          className="glass relative mt-6 overflow-hidden border border-cyan-200/25 bg-gradient-to-br from-slate-900/90 via-[#0f1d43]/92 to-[#0b1736]/95 p-6 md:p-7"
+        >
+          <div className="pointer-events-none absolute -right-20 -top-16 h-52 w-52 rounded-full bg-cyan-300/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-emerald-300/15 blur-3xl" />
+
+          <div className="relative grid gap-6 md:grid-cols-[1.3fr_1fr]">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-cyan-200/35 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-cyan-100">
+                <activeExpertiseItem.icon className="h-3.5 w-3.5" />
+                {activeExpertiseItem.label}
+              </div>
+              <p className="mt-4 text-base leading-relaxed text-slate-100">{activeExpertiseItem.intro}</p>
+              <div className="mt-5 space-y-3">
+                <div className="rounded-xl border border-white/15 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-emerald-200">How We Manage</p>
+                  <p className="mt-2 text-sm text-slate-100">{activeExpertiseItem.manage}</p>
+                </div>
+                <div className="rounded-xl border border-white/15 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-cyan-200">How You Track Service</p>
+                  <p className="mt-2 text-sm text-slate-100">{activeExpertiseItem.tracking}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/15 bg-white/5 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-200">What Is Included</p>
+              <ul className="mt-3 space-y-2">
+                {activeExpertiseItem.includes.map((entry) => (
+                  <li key={entry} className="inline-flex items-start gap-2 text-sm text-slate-100">
+                    <BadgeCheck className="mt-0.5 h-4 w-4 text-emerald-300" />
+                    {entry}
+                  </li>
+                ))}
+              </ul>
+              <a href="#contact" className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_18px_35px_-20px_rgba(16,185,129,0.9)] transition hover:brightness-110">
+                Start With This Service <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+        </motion.div>
       </RevealSection>
 
       <RevealSection className="section-shell relative z-10">
@@ -485,10 +680,10 @@ export default function HomePage() {
             <input required value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} placeholder="Phone Number" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
             <select value={form.service} onChange={(e) => setForm((p) => ({ ...p, service: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-slate-900">{serviceCards.map((s) => <option key={s.title}>{s.title}</option>)}</select>
             <select value={form.plan} onChange={(e) => setForm((p) => ({ ...p, plan: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-slate-900">{plans.map((p) => <option key={p.name}>{p.name}</option>)}</select>
-            <motion.button whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }} className="w-full rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-16px_rgba(16,185,129,0.95)]">
-              Submit Requirement
+            <motion.button disabled={isSubmitting} whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }} className="w-full rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-16px_rgba(16,185,129,0.95)] disabled:cursor-not-allowed disabled:opacity-60">
+              {isSubmitting ? "Submitting..." : "Submit Requirement"}
             </motion.button>
-            {msg ? <p className="text-sm text-emerald-500">{msg}</p> : null}
+            {msg ? <p className={`text-sm ${msgType === "success" ? "text-emerald-500" : "text-rose-500"}`}>{msg}</p> : null}
           </motion.form>
           <motion.div
             initial={{ opacity: 0, x: 24 }}
@@ -548,7 +743,7 @@ export default function HomePage() {
           <div><p className="text-lg font-bold text-white">Nova Tech Solutions</p><p className="mt-2 text-sm text-slate-300">Complete Digital Management for Modern Schools.</p></div>
           <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Services</p><ul className="mt-3 space-y-2 text-sm"><li>School Websites</li><li>School ERP</li><li>Result Management</li><li>Cloud Security</li></ul></div>
           <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Company</p><ul className="mt-3 space-y-2 text-sm"><li>Portfolio</li><li>Pricing</li><li>FAQ</li><li>Contact</li></ul></div>
-          <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Contact</p><p className="mt-3 text-sm">contact@novatechsolutions.in</p><p className="text-sm">+91 90000 12345</p><a href="https://wa.me/919000012345" target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-white">WhatsApp <ArrowRight className="h-4 w-4" /></a></div>
+          <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Contact</p><p className="mt-3 text-sm">contact@novatechsolutions.in</p><p className="text-sm">+91 8896115419</p><a href="https://wa.me/918896115419" target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-white">WhatsApp <ArrowRight className="h-4 w-4" /></a></div>
         </div>
       </motion.footer>
     </main>
