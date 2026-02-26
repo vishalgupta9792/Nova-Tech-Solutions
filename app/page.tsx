@@ -32,6 +32,50 @@ const serviceCards = [
   { title: "Cloud Hosting & Security", text: "Performance hosting, security layers, and backups." },
   { title: "Ongoing Technical Support", text: "Continuous optimization, upgrades, and issue resolution." }
 ];
+const serviceGuides = [
+  {
+    title: "School Website Development",
+    kya: "School website aapke institution ka official digital front door hota hai jahan parent trust build hota hai aur admission inquiries aati hain.",
+    kyu: "Aaj parents pehle online research karte hain. Agar website outdated ho, to school ki value perception drop hoti hai.",
+    benefits: ["Admission inquiry growth", "Professional brand image", "Mobile-friendly parent experience", "24x7 information availability"],
+    plan: "Basic Plan"
+  },
+  {
+    title: "Complete School ERP System",
+    kya: "ERP ek centralized software hai jo attendance, fee, exams, transport aur admin workflows ko ek jagah manage karta hai.",
+    kyu: "Manual process me errors, delays aur reporting chaos hota hai. ERP operational control deta hai.",
+    benefits: ["Time saving for staff", "Accurate records", "Faster decision making", "Parent communication automation"],
+    plan: "Professional Plan"
+  },
+  {
+    title: "Result Management System",
+    kya: "Result management module se report cards, marks processing aur publishing secure way me automated hota hai.",
+    kyu: "Exam time me manual result process risky hota hai aur parents ko delays face karne padte hain.",
+    benefits: ["Quick result publishing", "Error reduction", "Role-based access", "Parent trust and transparency"],
+    plan: "Professional Plan"
+  },
+  {
+    title: "Social Media Management",
+    kya: "School branding, event coverage, admission campaigns aur community engagement ke liye structured social media execution.",
+    kyu: "Competing schools digital visibility se admissions gain kar rahe hain; inactive presence opportunity loss hai.",
+    benefits: ["Better brand visibility", "Admission campaign support", "Consistent communication", "Higher engagement"],
+    plan: "Premium Plan"
+  },
+  {
+    title: "Cloud Hosting & Security",
+    kya: "Website/app ko high-uptime cloud infra par host karna with backup, firewall, SSL aur monitoring layers.",
+    kyu: "Downtime ya security breach directly school reputation aur operations ko impact karta hai.",
+    benefits: ["High uptime", "Data protection", "Secure access", "Performance stability"],
+    plan: "Premium Plan"
+  },
+  {
+    title: "Ongoing Technical Support",
+    kya: "Launch ke baad continuous maintenance, fixes, upgrades aur support response pipeline chalti hai.",
+    kyu: "Digital systems static nahi rehte; regular updates ke bina breakdown aur performance issues badhte hain.",
+    benefits: ["Fast issue resolution", "Continuous improvements", "Lower technical risk", "Peace of mind for management"],
+    plan: "Premium Plan"
+  }
+];
 const projects = [
   { name: "Greenfield International School", city: "Noida", outcome: "+42% inquiry growth in 5 months", img: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80" },
   { name: "Sunrise Public School", city: "Lucknow", outcome: "ERP + results unified across 2 campuses", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80" },
@@ -227,6 +271,7 @@ function OrbitCluster({ index }: { index: number }) {
 
 export default function HomePage() {
   const [faqOpen, setFaqOpen] = useState(0);
+  const [activeServiceGuide, setActiveServiceGuide] = useState(0);
   const [activeExpertise, setActiveExpertise] = useState(0);
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState<"success" | "error">("success");
@@ -288,6 +333,15 @@ export default function HomePage() {
   const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
   const seconds = String(Math.floor((timeLeft % (1000 * 60)) / 1000)).padStart(2, "0");
   const activeExpertiseItem = expertise[activeExpertise];
+  const activeGuide = serviceGuides[activeServiceGuide];
+
+  const openServiceGuide = (index: number) => {
+    setActiveServiceGuide(index);
+    const section = document.getElementById("service-guide");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   const payWithRazorpay = async (plan: typeof plans[number]) => {
     if (!window.Razorpay) {
@@ -460,10 +514,92 @@ export default function HomePage() {
         <Title tag="Services" head="High-Impact Solutions for School Growth" desc="Structured delivery model across brand, engineering, operations, and automation." />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {serviceCards.map((s, i) => (
-            <motion.article key={s.title} custom={i} variants={reveal} initial="hidden" whileInView="show" whileHover={{ y: -7 }} viewport={{ once: true }} className="glass p-6">
-              <h3 className="text-xl font-semibold">{s.title}</h3><p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{s.text}</p>
-            </motion.article>
+            <motion.button
+              key={s.title}
+              type="button"
+              custom={i}
+              variants={reveal}
+              initial="hidden"
+              whileInView="show"
+              whileHover={{ y: -7 }}
+              viewport={{ once: true }}
+              onClick={() => openServiceGuide(i)}
+              className={`glass p-6 text-left transition ${activeServiceGuide === i ? "border-emerald-300/50 bg-emerald-400/10" : ""}`}
+            >
+              <h3 className="text-xl font-semibold">{s.title}</h3>
+              <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{s.text}</p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.1em] text-emerald-500">Click to understand this service</p>
+            </motion.button>
           ))}
+        </div>
+      </RevealSection>
+
+      <RevealSection id="service-guide" className="section-shell relative z-10">
+        <Title tag="Service Guide" head="Click Topic, Understand Value, Decide Faster" desc="Har topic pe clear explanation: kya hai, kyu zaroori hai, aur aapko kya direct benefit milega." />
+        <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
+          <div className="glass p-3">
+            <div className="space-y-2">
+              {serviceGuides.map((guide, i) => (
+                <button
+                  key={guide.title}
+                  type="button"
+                  onClick={() => setActiveServiceGuide(i)}
+                  className={`w-full rounded-xl border px-4 py-3 text-left text-sm font-semibold transition ${
+                    activeServiceGuide === i
+                      ? "border-emerald-300/60 bg-emerald-400/15 text-emerald-100"
+                      : "border-white/20 bg-white/5 hover:border-cyan-200/50"
+                  }`}
+                >
+                  {guide.title}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <motion.div
+            key={activeGuide.title}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="glass relative overflow-hidden p-6 md:p-7"
+          >
+            <div className="pointer-events-none absolute -right-16 -top-14 h-44 w-44 rounded-full bg-cyan-300/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-14 -left-14 h-44 w-44 rounded-full bg-emerald-300/20 blur-3xl" />
+            <div className="relative">
+              <p className="inline-flex rounded-full border border-emerald-300/45 bg-emerald-400/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-emerald-200">
+                {activeGuide.title}
+              </p>
+              <div className="mt-5 grid gap-4 md:grid-cols-3">
+                <div className="rounded-xl border border-white/15 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-cyan-200">Kya Hai</p>
+                  <p className="mt-2 text-sm text-slate-100">{activeGuide.kya}</p>
+                </div>
+                <div className="rounded-xl border border-white/15 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-emerald-200">Kyu Zaroori</p>
+                  <p className="mt-2 text-sm text-slate-100">{activeGuide.kyu}</p>
+                </div>
+                <div className="rounded-xl border border-white/15 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-amber-200">Recommended Plan</p>
+                  <p className="mt-2 text-sm font-semibold text-white">{activeGuide.plan}</p>
+                  <a href="#pricing" className="mt-4 inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-3 py-2 text-xs font-semibold text-white">
+                    View Plan <ArrowRight className="h-3.5 w-3.5" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-xl border border-white/15 bg-white/5 p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-200">Aapko Kya Benefit Milega</p>
+                <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                  {activeGuide.benefits.map((benefit) => (
+                    <p key={benefit} className="inline-flex items-start gap-2 text-sm text-slate-100">
+                      <BadgeCheck className="mt-0.5 h-4 w-4 text-emerald-300" />
+                      {benefit}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </RevealSection>
 
@@ -651,7 +787,7 @@ export default function HomePage() {
         </motion.div>
       </RevealSection>
 
-      <RevealSection className="section-shell relative z-10">
+      <RevealSection id="faq" className="section-shell relative z-10">
         <Title tag="FAQ" head="Common Questions from School Leaders" desc="Clear answers that reduce decision friction for principals and directors." />
         <div className="space-y-3">
           {faqs.map((f, i) => (
@@ -741,8 +877,24 @@ export default function HomePage() {
       <motion.footer initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative z-10 border-t border-slate-300/30 bg-slate-950/95 text-slate-200">
         <div className="section-shell grid gap-8 py-12 md:grid-cols-4">
           <div><p className="text-lg font-bold text-white">Nova Tech Solutions</p><p className="mt-2 text-sm text-slate-300">Complete Digital Management for Modern Schools.</p></div>
-          <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Services</p><ul className="mt-3 space-y-2 text-sm"><li>School Websites</li><li>School ERP</li><li>Result Management</li><li>Cloud Security</li></ul></div>
-          <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Company</p><ul className="mt-3 space-y-2 text-sm"><li>Portfolio</li><li>Pricing</li><li>FAQ</li><li>Contact</li></ul></div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Services</p>
+            <ul className="mt-3 space-y-2 text-sm">
+              <li><button type="button" onClick={() => openServiceGuide(0)} className="transition hover:text-emerald-300">School Websites</button></li>
+              <li><button type="button" onClick={() => openServiceGuide(1)} className="transition hover:text-emerald-300">School ERP</button></li>
+              <li><button type="button" onClick={() => openServiceGuide(2)} className="transition hover:text-emerald-300">Result Management</button></li>
+              <li><button type="button" onClick={() => openServiceGuide(4)} className="transition hover:text-emerald-300">Cloud Security</button></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Company</p>
+            <ul className="mt-3 space-y-2 text-sm">
+              <li><a href="#projects" className="transition hover:text-emerald-300">Portfolio</a></li>
+              <li><a href="#pricing" className="transition hover:text-emerald-300">Pricing</a></li>
+              <li><a href="#faq" className="transition hover:text-emerald-300">FAQ</a></li>
+              <li><a href="#contact" className="transition hover:text-emerald-300">Contact</a></li>
+            </ul>
+          </div>
           <div><p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Contact</p><p className="mt-3 text-sm">contact@novatechsolutions.in</p><p className="text-sm">+91 8896115419</p><a href="https://wa.me/918896115419" target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-white">WhatsApp <ArrowRight className="h-4 w-4" /></a></div>
         </div>
       </motion.footer>
