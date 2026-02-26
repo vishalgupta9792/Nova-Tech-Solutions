@@ -35,43 +35,43 @@ const serviceCards = [
 const serviceGuides = [
   {
     title: "School Website Development",
-    kya: "School website aapke institution ka official digital front door hota hai jahan parent trust build hota hai aur admission inquiries aati hain.",
-    kyu: "Aaj parents pehle online research karte hain. Agar website outdated ho, to school ki value perception drop hoti hai.",
+    whatItIs: "A school website is your institution's official digital front door where parents evaluate trust, credibility, and admissions quality.",
+    whyItMatters: "Most parents research schools online first. An outdated website lowers perceived value and can reduce inquiry conversion.",
     benefits: ["Admission inquiry growth", "Professional brand image", "Mobile-friendly parent experience", "24x7 information availability"],
     plan: "Basic Plan"
   },
   {
     title: "Complete School ERP System",
-    kya: "ERP ek centralized software hai jo attendance, fee, exams, transport aur admin workflows ko ek jagah manage karta hai.",
-    kyu: "Manual process me errors, delays aur reporting chaos hota hai. ERP operational control deta hai.",
+    whatItIs: "An ERP is a centralized platform that manages attendance, fees, exams, transport, and administrative workflows in one place.",
+    whyItMatters: "Manual operations create delays, errors, and reporting gaps. ERP provides structure, visibility, and operational control.",
     benefits: ["Time saving for staff", "Accurate records", "Faster decision making", "Parent communication automation"],
     plan: "Professional Plan"
   },
   {
     title: "Result Management System",
-    kya: "Result management module se report cards, marks processing aur publishing secure way me automated hota hai.",
-    kyu: "Exam time me manual result process risky hota hai aur parents ko delays face karne padte hain.",
+    whatItIs: "A result management system automates marks processing, report card generation, and secure publishing.",
+    whyItMatters: "Manual result workflows are error-prone and slow during peak exam cycles.",
     benefits: ["Quick result publishing", "Error reduction", "Role-based access", "Parent trust and transparency"],
     plan: "Professional Plan"
   },
   {
     title: "Social Media Management",
-    kya: "School branding, event coverage, admission campaigns aur community engagement ke liye structured social media execution.",
-    kyu: "Competing schools digital visibility se admissions gain kar rahe hain; inactive presence opportunity loss hai.",
+    whatItIs: "Structured social execution for school branding, event coverage, admissions campaigns, and community engagement.",
+    whyItMatters: "Competing schools grow visibility and admissions through digital channels; inactive presence leads to missed opportunities.",
     benefits: ["Better brand visibility", "Admission campaign support", "Consistent communication", "Higher engagement"],
     plan: "Premium Plan"
   },
   {
     title: "Cloud Hosting & Security",
-    kya: "Website/app ko high-uptime cloud infra par host karna with backup, firewall, SSL aur monitoring layers.",
-    kyu: "Downtime ya security breach directly school reputation aur operations ko impact karta hai.",
+    whatItIs: "High-uptime cloud hosting with backups, SSL, firewall protection, and proactive monitoring.",
+    whyItMatters: "Downtime or security incidents directly impact school reputation, trust, and daily operations.",
     benefits: ["High uptime", "Data protection", "Secure access", "Performance stability"],
     plan: "Premium Plan"
   },
   {
     title: "Ongoing Technical Support",
-    kya: "Launch ke baad continuous maintenance, fixes, upgrades aur support response pipeline chalti hai.",
-    kyu: "Digital systems static nahi rehte; regular updates ke bina breakdown aur performance issues badhte hain.",
+    whatItIs: "Post-launch support includes ongoing maintenance, issue resolution, upgrades, and optimization.",
+    whyItMatters: "Digital systems require continuous updates; without them, performance and reliability degrade over time.",
     benefits: ["Fast issue resolution", "Continuous improvements", "Lower technical risk", "Peace of mind for management"],
     plan: "Premium Plan"
   }
@@ -497,7 +497,7 @@ export default function HomePage() {
       </RevealSection>
 
       <RevealSection id="industries" className="section-shell relative z-10 pt-8 md:pt-10">
-        <Title tag="Who We Are" head="Agency-Grade Delivery with Product Thinking" desc="KrishaWeb style funnel follow karte hue: strong proof, rich projects, clear expertise, and conversion-oriented contact flow." />
+        <Title tag="Who We Are" head="Agency-Grade Delivery with Product Thinking" desc="A conversion-first funnel with strong proof, high-quality projects, clear expertise, and a focused contact journey." />
         <div className="grid gap-4 md:grid-cols-4">
           {stats.map((s, i) => (
             <motion.div key={s.label} custom={i} variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }} className="glass p-6 text-center">
@@ -535,7 +535,7 @@ export default function HomePage() {
       </RevealSection>
 
       <RevealSection id="service-guide" className="section-shell relative z-10">
-        <Title tag="Service Guide" head="Click Topic, Understand Value, Decide Faster" desc="Har topic pe clear explanation: kya hai, kyu zaroori hai, aur aapko kya direct benefit milega." />
+        <Title tag="Service Guide" head="Click a Topic, Understand the Value, Decide Faster" desc="Each topic clearly explains what it is, why it matters, and the direct outcomes your school can expect." />
         <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
           <div className="glass p-3">
             <div className="space-y-2">
@@ -571,12 +571,12 @@ export default function HomePage() {
               </p>
               <div className="mt-5 grid gap-4 md:grid-cols-3">
                 <div className="rounded-xl border border-white/15 bg-white/5 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-cyan-200">Kya Hai</p>
-                  <p className="mt-2 text-sm text-slate-100">{activeGuide.kya}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-cyan-200">What It Is</p>
+                  <p className="mt-2 text-sm text-slate-100">{activeGuide.whatItIs}</p>
                 </div>
                 <div className="rounded-xl border border-white/15 bg-white/5 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-emerald-200">Kyu Zaroori</p>
-                  <p className="mt-2 text-sm text-slate-100">{activeGuide.kyu}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-emerald-200">Why It Matters</p>
+                  <p className="mt-2 text-sm text-slate-100">{activeGuide.whyItMatters}</p>
                 </div>
                 <div className="rounded-xl border border-white/15 bg-white/5 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.1em] text-amber-200">Recommended Plan</p>
@@ -588,7 +588,7 @@ export default function HomePage() {
               </div>
 
               <div className="mt-5 rounded-xl border border-white/15 bg-white/5 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-200">Aapko Kya Benefit Milega</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-slate-200">Expected Benefits</p>
                 <div className="mt-3 grid gap-2 sm:grid-cols-2">
                   {activeGuide.benefits.map((benefit) => (
                     <p key={benefit} className="inline-flex items-start gap-2 text-sm text-slate-100">
