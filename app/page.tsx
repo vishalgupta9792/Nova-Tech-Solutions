@@ -668,9 +668,6 @@ export default function HomePage() {
                   <Wallet className="h-4 w-4" />
                   {payingPlan === p.name ? "Starting Razorpay..." : "Pay with Razorpay"}
                 </button>
-                <a href={upiQr(p.name, p.amount)} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-cyan-300/40 bg-cyan-400/5 px-4 py-3 text-sm font-semibold transition duration-300 hover:border-cyan-200/70 hover:bg-cyan-400/10 dark:border-cyan-200/30">
-                  Scan & Pay (PhonePe QR)
-                </a>
                 <button
                   onClick={() => payViaUpiApp(p.name, p.amount)}
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-300/40 bg-emerald-400/5 px-4 py-3 text-sm font-semibold transition duration-300 hover:border-emerald-200/70 hover:bg-emerald-400/10 dark:border-emerald-200/30"
