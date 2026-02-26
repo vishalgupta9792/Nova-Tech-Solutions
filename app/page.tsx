@@ -160,7 +160,7 @@ const faqs = [
   { q: "Can you migrate from existing ERP?", a: "Yes, we provide phased data migration and onboarding support." },
   { q: "Do you support CBSE/ICSE result formats?", a: "Yes, we configure modules around school-specific workflows." }
 ];
-const contactHighlights = ["Fast Onboarding", "Admission Growth Focus", "24x7 Tech Support", "Conversion-Led UX"];
+const contactHighlights = ["Needs Assessment", "Admissions Roadmap", "Dedicated Implementation Team", "Training & Handover"];
 const stats = [
   { value: 8, label: "Years Experience", suffix: "+" },
   { value: 20, label: "Specialists", suffix: "+" },
@@ -797,7 +797,7 @@ export default function HomePage() {
       </RevealSection>
 
       <RevealSection id="contact" className="section-shell relative z-10">
-        <Title tag="Contact" head="Premium Inquiry Experience" />
+        <Title tag="Contact" head="Book a Consultation for Your School" desc="Share your goals and current challenges. We will propose the right service mix, timeline, and implementation plan." />
         <div className="grid gap-6 md:grid-cols-2 md:items-start">
           <motion.form
             onSubmit={submit}
@@ -808,13 +808,14 @@ export default function HomePage() {
           >
             <div className="pointer-events-none absolute -right-14 -top-14 h-36 w-36 rounded-full bg-emerald-400/25 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-14 -left-14 h-40 w-40 rounded-full bg-blue-400/20 blur-3xl" />
-            <input required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="Your Name" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
-            <input required value={form.school} onChange={(e) => setForm((p) => ({ ...p, school: e.target.value }))} placeholder="School Name" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
-            <input required value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} placeholder="Phone Number" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
+            <p className="relative text-xs font-medium text-slate-600 dark:text-slate-300">Complete this form to receive a customized proposal and implementation estimate.</p>
+            <input required value={form.name} onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} placeholder="Full Name" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
+            <input required value={form.school} onChange={(e) => setForm((p) => ({ ...p, school: e.target.value }))} placeholder="Official School Name" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
+            <input required value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} placeholder="WhatsApp / Contact Number" className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-white/10 dark:focus:border-emerald-300" />
             <select value={form.service} onChange={(e) => setForm((p) => ({ ...p, service: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-slate-900">{serviceCards.map((s) => <option key={s.title}>{s.title}</option>)}</select>
             <select value={form.plan} onChange={(e) => setForm((p) => ({ ...p, plan: e.target.value }))} className="w-full rounded-xl border border-slate-300/50 bg-white/80 px-4 py-3 text-sm shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 dark:border-white/20 dark:bg-slate-900">{plans.map((p) => <option key={p.name}>{p.name}</option>)}</select>
             <motion.button disabled={isSubmitting} whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }} className="w-full rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-500 to-cyan-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-16px_rgba(16,185,129,0.95)] disabled:cursor-not-allowed disabled:opacity-60">
-              {isSubmitting ? "Submitting..." : "Submit Requirement"}
+              {isSubmitting ? "Submitting..." : "Request Proposal"}
             </motion.button>
             {msg ? <p className={`text-sm ${msgType === "success" ? "text-emerald-500" : "text-rose-500"}`}>{msg}</p> : null}
           </motion.form>
@@ -831,12 +832,12 @@ export default function HomePage() {
               className="relative rounded-2xl border border-white/25 bg-white/10 p-6 shadow-[0_30px_60px_-35px_rgba(16,185,129,0.85)] backdrop-blur-xl"
             >
               <div className="mb-4 flex items-center justify-between">
-                <p className="text-lg font-semibold text-white">Launch-Ready Creative Stack</p>
+                <p className="text-lg font-semibold text-white">Consultation Snapshot</p>
                 <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300/35 bg-emerald-400/20 px-3 py-1 text-xs font-semibold text-emerald-100">
-                  <Zap className="h-3.5 w-3.5" /> 48h Response
+                  <Zap className="h-3.5 w-3.5" /> Priority Callback
                 </span>
               </div>
-              <p className="text-sm text-slate-200">A premium client-facing contact experience with animated visual depth and conversion-focused UX details.</p>
+              <p className="text-sm text-slate-200">Our team reviews your requirements, maps the right modules, and shares a practical rollout plan with transparent pricing.</p>
               <div className="mt-5 grid grid-cols-2 gap-2">
                 {contactHighlights.map((item, i) => (
                   <motion.div
@@ -854,13 +855,13 @@ export default function HomePage() {
             </motion.div>
             <div className="relative mt-5 space-y-3">
               <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.08em] text-slate-200">
-                <span>Experience Depth</span>
-                <span>94%</span>
+                <span>Response SLA</span>
+                <span>Within 48 Hours</span>
               </div>
               <div className="h-2 rounded-full bg-white/15">
                 <motion.div
                   initial={{ width: 0 }}
-                  whileInView={{ width: "94%" }}
+                  whileInView={{ width: "100%" }}
                   viewport={{ once: true }}
                   transition={{ duration: 1, ease: "easeOut" }}
                   className="h-2 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400"
