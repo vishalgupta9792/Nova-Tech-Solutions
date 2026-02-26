@@ -298,6 +298,15 @@ export default function HomePage() {
   const { scrollYProgress } = useScroll();
   const orbLeftY = useTransform(scrollYProgress, [0, 1], [-30, 180]);
   const orbRightY = useTransform(scrollYProgress, [0, 1], [-10, 120]);
+  const faqRef = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress: faqProgress } = useScroll({
+    target: faqRef,
+    offset: ["start end", "end start"]
+  });
+  const faqLift = useTransform(faqProgress, [0, 0.5, 1], [38, 0, -26]);
+  const faqLeftX = useTransform(faqProgress, [0, 0.5, 1], [-16, 0, 10]);
+  const faqRightX = useTransform(faqProgress, [0, 0.5, 1], [18, 0, -12]);
+  const faqSweepX = useTransform(faqProgress, [0, 1], ["-35%", "115%"]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -801,8 +810,12 @@ export default function HomePage() {
 
       <RevealSection id="faq" className="section-shell relative z-10">
         <Title tag="FAQ" head="Strategic Answers for School Decision-Makers" desc="An interactive FAQ experience designed to make decisions faster and more confident." />
-        <div className="grid gap-5 lg:grid-cols-[280px_1fr]">
-          <div className="glass p-4">
+        <motion.div ref={faqRef} style={{ y: faqLift }} className="relative grid gap-5 lg:grid-cols-[280px_1fr]">
+          <motion.div
+            style={{ x: faqSweepX }}
+            className="pointer-events-none absolute inset-y-2 z-0 w-20 -skew-x-12 bg-gradient-to-r from-transparent via-cyan-300/10 to-transparent blur-sm"
+          />
+          <motion.div style={{ x: faqLeftX }} className="glass relative z-10 p-4">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-300">Question Navigator</p>
             <div className="space-y-2">
               {faqs.map((f, i) => (
@@ -824,9 +837,9 @@ export default function HomePage() {
                 </motion.button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="space-y-3">
+          <motion.div style={{ x: faqRightX }} className="relative z-10 space-y-3">
             <motion.div
               key={faqs[faqOpen].q}
               initial={{ opacity: 0, y: 12 }}
@@ -888,8 +901,8 @@ export default function HomePage() {
                 </motion.button>
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </RevealSection>
 
       <RevealSection id="contact" className="section-shell relative z-10">
