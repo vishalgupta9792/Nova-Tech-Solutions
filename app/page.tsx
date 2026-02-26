@@ -806,9 +806,11 @@ export default function HomePage() {
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-300">Question Navigator</p>
             <div className="space-y-2">
               {faqs.map((f, i) => (
-                <button
+                <motion.button
                   key={f.q}
                   onClick={() => setFaqOpen(i)}
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{ duration: 3 + i * 0.6, repeat: Infinity, ease: "easeInOut" }}
                   className={`w-full rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
                     faqOpen === i
                       ? "border-emerald-300/60 bg-emerald-400/15 text-emerald-100"
@@ -819,7 +821,7 @@ export default function HomePage() {
                     {f.category}
                   </span>
                   <p className="mt-2">{f.q}</p>
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
@@ -832,8 +834,21 @@ export default function HomePage() {
               transition={{ duration: 0.35 }}
               className="glass relative overflow-hidden border border-cyan-300/25 bg-gradient-to-br from-slate-900/85 via-[#102446]/85 to-[#0b1d37]/90 p-6"
             >
-              <div className="pointer-events-none absolute -right-14 -top-14 h-44 w-44 rounded-full bg-cyan-300/25 blur-3xl" />
-              <div className="pointer-events-none absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-emerald-300/20 blur-3xl" />
+              <motion.div
+                animate={{ x: [0, 18, 0], y: [0, -10, 0] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                className="pointer-events-none absolute -right-14 -top-14 h-44 w-44 rounded-full bg-cyan-300/25 blur-3xl"
+              />
+              <motion.div
+                animate={{ x: [0, -14, 0], y: [0, 12, 0] }}
+                transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut" }}
+                className="pointer-events-none absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-emerald-300/20 blur-3xl"
+              />
+              <motion.div
+                animate={{ x: ["-120%", "120%"] }}
+                transition={{ duration: 3.4, repeat: Infinity, ease: "linear" }}
+                className="pointer-events-none absolute inset-y-0 w-24 -skew-x-12 bg-gradient-to-r from-transparent via-cyan-200/10 to-transparent"
+              />
               <div className="relative">
                 <p className="inline-flex rounded-full border border-cyan-200/45 bg-cyan-400/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-cyan-100">
                   {faqs[faqOpen].category}
@@ -852,12 +867,19 @@ export default function HomePage() {
                 <motion.button
                   key={`${f.q}-card`}
                   type="button"
-                  whileHover={{ y: -3 }}
+                  whileHover={{ y: -3, scale: 1.01 }}
+                  animate={{ y: [0, -1.5, 0] }}
+                  transition={{ duration: 4 + i * 0.5, repeat: Infinity, ease: "easeInOut" }}
                   onClick={() => setFaqOpen(i)}
-                  className={`glass flex items-start justify-between gap-3 p-4 text-left transition ${
+                  className={`glass group relative overflow-hidden flex items-start justify-between gap-3 p-4 text-left transition ${
                     faqOpen === i ? "border-emerald-300/45 bg-emerald-400/10" : ""
                   }`}
                 >
+                  <motion.span
+                    animate={{ x: ["-130%", "130%"] }}
+                    transition={{ duration: 2.8 + i * 0.2, repeat: Infinity, ease: "linear" }}
+                    className="pointer-events-none absolute inset-y-0 w-16 -skew-x-12 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                  />
                   <div>
                     <p className="text-sm font-semibold">{f.q}</p>
                     <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">{f.category}</p>
