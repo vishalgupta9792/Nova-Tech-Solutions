@@ -156,9 +156,24 @@ const technologyTicker = [
   { label: "Next.js", icon: Rocket, iconTone: "text-slate-200", chipTone: "border-slate-300/35 bg-slate-500/10" }
 ];
 const faqs = [
-  { q: "How fast can you launch a school website?", a: "In most cases, 2 to 4 weeks with content and approvals ready." },
-  { q: "Can you migrate from existing ERP?", a: "Yes, we provide phased data migration and onboarding support." },
-  { q: "Do you support CBSE/ICSE result formats?", a: "Yes, we configure modules around school-specific workflows." }
+  {
+    q: "How fast can you launch a school website?",
+    a: "In most cases, delivery is completed in 2 to 4 weeks when content and approvals are provided on schedule.",
+    category: "Delivery",
+    detail: "We run phased milestones: discovery, design, development, and launch."
+  },
+  {
+    q: "Can you migrate from an existing ERP?",
+    a: "Yes. We provide phased migration, data validation, and parallel run support to avoid operational disruption.",
+    category: "Migration",
+    detail: "Data mapping is finalized before migration to preserve historical records."
+  },
+  {
+    q: "Do you support CBSE/ICSE result formats?",
+    a: "Yes. We configure report structures and workflows to match each board and school-specific academic rules.",
+    category: "Academics",
+    detail: "Your team gets role-based publishing control and final approval workflow."
+  }
 ];
 const contactHighlights = ["Needs Assessment", "Admissions Roadmap", "Dedicated Implementation Team", "Training & Handover"];
 const stats = [
@@ -785,14 +800,73 @@ export default function HomePage() {
       </RevealSection>
 
       <RevealSection id="faq" className="section-shell relative z-10">
-        <Title tag="FAQ" head="Common Questions from School Leaders" desc="Clear answers that reduce decision friction for principals and directors." />
-        <div className="space-y-3">
-          {faqs.map((f, i) => (
-            <div key={f.q} className="glass p-5">
-              <button onClick={() => setFaqOpen(i)} className="flex w-full items-center justify-between text-left text-sm font-semibold">{f.q}<ArrowRight className={`h-4 w-4 transition ${faqOpen === i ? "rotate-90" : ""}`} /></button>
-              {faqOpen === i ? <p className="mt-3 text-sm text-slate-700 dark:text-slate-300">{f.a}</p> : null}
+        <Title tag="FAQ" head="Strategic Answers for School Decision-Makers" desc="An interactive FAQ experience designed to make decisions faster and more confident." />
+        <div className="grid gap-5 lg:grid-cols-[280px_1fr]">
+          <div className="glass p-4">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-300">Question Navigator</p>
+            <div className="space-y-2">
+              {faqs.map((f, i) => (
+                <button
+                  key={f.q}
+                  onClick={() => setFaqOpen(i)}
+                  className={`w-full rounded-xl border px-3 py-3 text-left text-sm font-semibold transition ${
+                    faqOpen === i
+                      ? "border-emerald-300/60 bg-emerald-400/15 text-emerald-100"
+                      : "border-white/20 bg-white/5 hover:border-cyan-200/45"
+                  }`}
+                >
+                  <span className="inline-flex rounded-md border border-white/20 bg-white/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.1em] text-slate-200">
+                    {f.category}
+                  </span>
+                  <p className="mt-2">{f.q}</p>
+                </button>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div className="space-y-3">
+            <motion.div
+              key={faqs[faqOpen].q}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35 }}
+              className="glass relative overflow-hidden border border-cyan-300/25 bg-gradient-to-br from-slate-900/85 via-[#102446]/85 to-[#0b1d37]/90 p-6"
+            >
+              <div className="pointer-events-none absolute -right-14 -top-14 h-44 w-44 rounded-full bg-cyan-300/25 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-emerald-300/20 blur-3xl" />
+              <div className="relative">
+                <p className="inline-flex rounded-full border border-cyan-200/45 bg-cyan-400/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] text-cyan-100">
+                  {faqs[faqOpen].category}
+                </p>
+                <h3 className="mt-4 text-2xl font-bold text-white">{faqs[faqOpen].q}</h3>
+                <p className="mt-3 text-base leading-relaxed text-slate-100">{faqs[faqOpen].a}</p>
+                <div className="mt-4 rounded-xl border border-white/15 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.1em] text-emerald-200">Implementation Note</p>
+                  <p className="mt-2 text-sm text-slate-100">{faqs[faqOpen].detail}</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <div className="grid gap-3 md:grid-cols-2">
+              {faqs.map((f, i) => (
+                <motion.button
+                  key={`${f.q}-card`}
+                  type="button"
+                  whileHover={{ y: -3 }}
+                  onClick={() => setFaqOpen(i)}
+                  className={`glass flex items-start justify-between gap-3 p-4 text-left transition ${
+                    faqOpen === i ? "border-emerald-300/45 bg-emerald-400/10" : ""
+                  }`}
+                >
+                  <div>
+                    <p className="text-sm font-semibold">{f.q}</p>
+                    <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">{f.category}</p>
+                  </div>
+                  <ArrowRight className={`mt-1 h-4 w-4 shrink-0 transition ${faqOpen === i ? "rotate-90 text-emerald-300" : "text-slate-400"}`} />
+                </motion.button>
+              ))}
+            </div>
+          </div>
         </div>
       </RevealSection>
 
