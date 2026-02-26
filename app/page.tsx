@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Atom, BadgeCheck, BarChart3, BookOpenCheck, BriefcaseBusiness, ChartSpline, ClipboardCheck, Cloud, FileCode2, Flame, Layers, Rocket, School, Sparkles, Wallet, Wind, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -509,83 +510,64 @@ export default function HomePage() {
           <div className="pointer-events-none absolute -left-20 top-10 h-44 w-44 rounded-full bg-emerald-300/15 blur-3xl" />
           <div className="pointer-events-none absolute -right-20 bottom-6 h-44 w-44 rounded-full bg-cyan-300/15 blur-3xl" />
           <div>
-            <p className="mb-4 inline-flex rounded-full border border-slate-300/60 bg-white/55 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-800 dark:border-white/25 dark:bg-white/10 dark:text-white">Built for Next-Generation Schools</p>
+            <p className="mb-4 inline-flex rounded-full border border-slate-300/60 bg-white/55 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-slate-800 dark:border-white/25 dark:bg-white/10 dark:text-white">India&apos;s School Digital Transformation Studio</p>
             <h1 className="text-4xl font-extrabold leading-[1.02] text-slate-900 dark:text-white md:text-6xl">
-              The Operating System
-              <span className="block bg-gradient-to-r from-emerald-400 via-cyan-300 to-blue-300 bg-clip-text text-transparent">
-                for High-Performing Schools
-              </span>
+              Where School Reputation
+              <span className="block bg-gradient-to-r from-emerald-400 via-cyan-300 to-blue-300 bg-clip-text text-transparent">Meets Digital Performance</span>
             </h1>
             <p className="mt-5 max-w-xl text-base text-slate-700 dark:text-slate-200 md:text-lg">
-              From admissions websites to ERP and results automation, we architect one connected digital layer that improves trust, speed, and school-wide execution.
+              We build high-converting school websites, ERP systems, and result automation into one seamless digital layer that improves admissions, operations, and parent trust.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-20px_rgba(16,185,129,0.95)]">Get Free Demo <ArrowRight className="h-4 w-4" /></a>
-              <a href="#pricing" className="rounded-full border border-slate-400/60 bg-white/50 px-6 py-3 text-sm font-semibold text-slate-800 transition hover:bg-white/70 dark:border-white/35 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">View Plans</a>
+              <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-20px_rgba(16,185,129,0.95)]">Book Free Strategy Call <ArrowRight className="h-4 w-4" /></a>
+              <a href="#projects" className="rounded-full border border-slate-400/60 bg-white/50 px-6 py-3 text-sm font-semibold text-slate-800 transition hover:bg-white/70 dark:border-white/35 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">See Transformation Stories</a>
             </div>
             <div className="mt-6 grid max-w-md grid-cols-3 gap-2 text-center text-xs text-slate-800 dark:text-white">
               <span className="rounded-lg border border-slate-300/60 bg-white/45 py-2 dark:border-white/20 dark:bg-white/5">100+ Schools</span>
               <span className="rounded-lg border border-slate-300/60 bg-white/45 py-2 dark:border-white/20 dark:bg-white/5">99.9% Uptime</span>
-              <span className="rounded-lg border border-slate-300/60 bg-white/45 py-2 dark:border-white/20 dark:bg-white/5">4 Hour SLA</span>
+              <span className="rounded-lg border border-slate-300/60 bg-white/45 py-2 dark:border-white/20 dark:bg-white/5">4-Hour Support SLA</span>
             </div>
           </div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative h-[430px] w-full rounded-3xl border border-white/20 bg-gradient-to-br from-slate-900/95 via-[#0e2144]/90 to-[#12395d]/90 p-4 shadow-[0_40px_70px_-40px_rgba(8,145,178,0.8)]"
+            className="relative h-[430px] w-full overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-slate-900/95 via-[#0e2144]/90 to-[#12395d]/90 p-4 shadow-[0_40px_70px_-40px_rgba(8,145,178,0.8)]"
           >
-            <div className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_15%_18%,rgba(16,185,129,0.2),transparent_30%),radial-gradient(circle_at_82%_5%,rgba(56,189,248,0.22),transparent_36%)]" />
+            <div className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_14%_10%,rgba(16,185,129,0.18),transparent_28%),radial-gradient(circle_at_90%_8%,rgba(56,189,248,0.2),transparent_32%)]" />
+            <Image
+              src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1600&q=90"
+              alt="Students collaborating in a modern classroom"
+              fill
+              className="rounded-3xl object-cover opacity-80"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+            <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent" />
+
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-xl"
+              className="relative mt-64 rounded-2xl border border-white/25 bg-slate-900/55 p-4 backdrop-blur-xl"
             >
               <div className="mb-3 flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-cyan-100">School Command Center</p>
-                <span className="rounded-full border border-emerald-300/35 bg-emerald-400/20 px-2 py-1 text-[10px] font-semibold text-emerald-100">Live</span>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-cyan-100">Live School Dashboard</p>
+                <span className="rounded-full border border-emerald-300/35 bg-emerald-400/20 px-2 py-1 text-[10px] font-semibold text-emerald-100">Real-Time</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
-                <div className="rounded-lg border border-white/20 bg-white/10 p-3">
-                  <p className="text-[10px] uppercase text-slate-300">Admissions</p>
+                <div className="rounded-lg border border-white/25 bg-white/10 p-3">
+                  <p className="text-[10px] uppercase text-slate-300">Admissions Leads</p>
                   <p className="mt-1 text-lg font-bold text-white">+38%</p>
                 </div>
-                <div className="rounded-lg border border-white/20 bg-white/10 p-3">
-                  <p className="text-[10px] uppercase text-slate-300">Attendance</p>
-                  <p className="mt-1 text-lg font-bold text-white">96.4%</p>
+                <div className="rounded-lg border border-white/25 bg-white/10 p-3">
+                  <p className="text-[10px] uppercase text-slate-300">Parent Engagement</p>
+                  <p className="mt-1 text-lg font-bold text-white">87%</p>
                 </div>
-                <div className="rounded-lg border border-white/20 bg-white/10 p-3">
-                  <p className="text-[10px] uppercase text-slate-300">Fees Collected</p>
-                  <p className="mt-1 text-lg font-bold text-white">92%</p>
+                <div className="rounded-lg border border-white/25 bg-white/10 p-3">
+                  <p className="text-[10px] uppercase text-slate-300">Ops Efficiency</p>
+                  <p className="mt-1 text-lg font-bold text-white">+41%</p>
                 </div>
               </div>
             </motion.div>
-
-            <div className="relative mt-4 grid gap-3">
-              <motion.div
-                animate={{ x: [0, 8, 0] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-                className="rounded-xl border border-cyan-200/30 bg-white/10 p-3"
-              >
-                <p className="text-xs font-semibold text-cyan-100">Website + ERP Integration</p>
-                <p className="mt-1 text-xs text-slate-200">Single sign-on across admissions, communication, and exam modules.</p>
-              </motion.div>
-              <motion.div
-                animate={{ x: [0, -10, 0] }}
-                transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
-                className="rounded-xl border border-emerald-200/30 bg-white/10 p-3"
-              >
-                <p className="text-xs font-semibold text-emerald-100">Result Publishing Automation</p>
-                <p className="mt-1 text-xs text-slate-200">Board-ready report generation with secure role-based access.</p>
-              </motion.div>
-              <motion.div
-                animate={{ x: [0, 6, 0] }}
-                transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
-                className="rounded-xl border border-white/20 bg-white/10 p-3"
-              >
-                <p className="text-xs font-semibold text-white">Cloud Reliability Layer</p>
-                <p className="mt-1 text-xs text-slate-200">Backups, uptime monitoring, and security hardening built in.</p>
-              </motion.div>
-            </div>
           </motion.div>
         </div>
       </RevealSection>
@@ -702,7 +684,9 @@ export default function HomePage() {
         <div className="grid gap-5 md:grid-cols-3">
           {projects.map((p, i) => (
             <motion.article key={p.name} custom={i} variants={reveal} initial="hidden" whileInView="show" whileHover={{ y: -6 }} className="glass overflow-hidden">
-              <img src={p.img} alt={p.name} className="h-48 w-full object-cover" />
+              <div className="relative h-48 w-full">
+                <Image src={p.img} alt={p.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+              </div>
               <div className="p-5"><p className="text-lg font-semibold">{p.name}</p><p className="text-xs uppercase tracking-[0.12em] text-slate-600 dark:text-slate-300">{p.city}</p><p className="mt-3 text-sm">{p.outcome}</p></div>
             </motion.article>
           ))}
