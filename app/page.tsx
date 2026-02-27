@@ -474,8 +474,15 @@ export default function HomePage() {
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
             className="rounded-xl border border-slate-300/55 bg-white/45 px-3 py-2 transition-colors hover:bg-white/70 dark:border-white/20 dark:bg-white/10 dark:hover:bg-white/15"
           >
-            <p className="text-lg font-bold text-slate-900 dark:text-white">Nova Tech Solutions</p>
-            <p className="text-xs text-slate-700 dark:text-slate-200">Complete Digital Management for Modern Schools</p>
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-slate-300/60 bg-white/70 shadow-sm dark:border-white/20 dark:bg-white/10">
+                <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={34} height={34} className="h-8 w-8 object-contain" priority />
+              </span>
+              <span>
+                <p className="text-lg font-bold text-slate-900 dark:text-white">Nova Tech Solutions</p>
+                <p className="text-xs text-slate-700 dark:text-slate-200">Complete Digital Management for Modern Schools</p>
+              </span>
+            </div>
           </motion.a>
           <div className="order-3 w-full md:order-none md:w-auto">
             <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 py-1">
@@ -1110,7 +1117,12 @@ export default function HomePage() {
       <motion.footer initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative z-10 border-t border-slate-300/30 bg-slate-950/95 text-slate-200">
         <div className="section-shell grid gap-8 py-12 md:grid-cols-5">
           <div>
-            <p className="text-lg font-bold text-white">Nova Tech Solutions</p>
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-white/20 bg-white/10">
+                <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={34} height={34} className="h-8 w-8 object-contain" />
+              </span>
+              <p className="text-lg font-bold text-white">Nova Tech Solutions</p>
+            </div>
             <p className="mt-2 text-sm text-slate-300">Complete Digital Management for Modern Schools.</p>
             <p className="mt-4 text-xs text-slate-400">GST: 09ABCDE1234F1Z5</p>
             <p className="text-xs text-slate-400">CIN: U62013UP2024PTC123456</p>
