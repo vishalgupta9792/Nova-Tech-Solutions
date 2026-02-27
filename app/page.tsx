@@ -472,7 +472,7 @@ export default function HomePage() {
             whileHover={{ y: -1, scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
-            className="rounded-xl border border-slate-300/55 bg-white/45 px-3 py-2 transition-colors hover:bg-white/70 dark:border-white/20 dark:bg-white/10 dark:hover:bg-white/15"
+            className="rounded-xl bg-white/45 px-3 py-2 transition-colors hover:bg-white/70 dark:bg-white/10 dark:hover:bg-white/15"
           >
             <div className="flex items-center gap-3">
               <span className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-slate-300/60 bg-white/70 shadow-sm dark:border-white/20 dark:bg-white/10">
