@@ -469,12 +469,13 @@ export default function HomePage() {
         <nav className="glass flex flex-wrap items-center justify-between gap-3 px-5 py-3 text-slate-900 dark:text-slate-100">
           <motion.a
             href="#"
+            whileHover={{ y: -1, scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
-            className="rounded-xl bg-white/45 px-3 py-2 dark:bg-white/10"
+            className="rounded-xl bg-white/45 px-3 py-2 transition-colors hover:bg-white/70 dark:bg-white/10 dark:hover:bg-white/15"
           >
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-slate-300/60 bg-white/70 shadow-sm dark:border-white/20 dark:bg-white/10">
+              <span className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-white/70 shadow-sm dark:bg-white/10">
                 <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={34} height={34} className="h-8 w-8 object-contain" priority />
               </span>
               <span>
@@ -1117,7 +1118,7 @@ export default function HomePage() {
         <div className="section-shell grid gap-8 py-12 md:grid-cols-5">
           <div>
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-white/20 bg-white/10">
+              <span className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-white/10">
                 <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={34} height={34} className="h-8 w-8 object-contain" />
               </span>
               <p className="text-lg font-bold text-white">Nova Tech Solutions</p>
