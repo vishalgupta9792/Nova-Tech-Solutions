@@ -466,28 +466,28 @@ export default function HomePage() {
       <motion.div style={{ y: orbRightY }} className="pointer-events-none absolute -right-20 top-8 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
 
       <header className="section-shell relative z-10 py-7">
-        <nav className="glass rounded-[28px] px-6 py-5 text-slate-900 dark:text-slate-100">
-          <div className="flex flex-col gap-5">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <motion.a
-                href="#"
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.99 }}
-                transition={{ type: "spring", stiffness: 260, damping: 24 }}
-                className="rounded-3xl border border-white/25 bg-white/25 px-5 py-4 backdrop-blur-xl dark:border-white/15 dark:bg-white/10"
-              >
-                <div className="flex items-center gap-4">
-                  <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/90 shadow-[0_14px_30px_-18px_rgba(15,23,42,0.8)] dark:bg-white/12">
-                    <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={36} height={36} className="h-9 w-9 object-contain" priority />
-                  </span>
-                  <span className="space-y-1">
-                    <p className="text-2xl font-semibold leading-none tracking-[-0.02em] text-white md:text-5xl">Nova Tech Solutions</p>
-                    <p className="text-xs font-medium text-slate-200 md:text-2xl">Complete Digital Management for Modern Schools</p>
-                  </span>
-                </div>
-              </motion.a>
+        <nav className="glass px-5 py-3 text-slate-900 dark:text-slate-100">
+          <div className="flex flex-wrap items-center gap-3 lg:flex-nowrap lg:justify-between">
+            <motion.a
+              href="#"
+              whileHover={{ y: -1 }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: "spring", stiffness: 260, damping: 24 }}
+              className="min-w-0 rounded-2xl border border-white/20 bg-white/20 px-3 py-2 backdrop-blur-xl dark:border-white/15 dark:bg-white/8"
+            >
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/90 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.8)] dark:bg-white/12">
+                  <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={28} height={28} className="h-7 w-7 object-contain" priority />
+                </span>
+                <span className="min-w-0">
+                  <p className="truncate text-xl font-semibold leading-tight tracking-[-0.01em] text-white">Nova Tech Solutions</p>
+                  <p className="truncate text-xs text-slate-200">Complete Digital Management for Modern Schools</p>
+                </span>
+              </div>
+            </motion.a>
 
-              <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 py-1">
+            <div className="order-3 w-full lg:order-none lg:w-auto">
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:overflow-visible lg:pb-0">
                 {nav.map((item) => (
                   <motion.a
                     key={item.label}
@@ -495,24 +495,24 @@ export default function HomePage() {
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                    className="group relative shrink-0 rounded-full border border-white/30 bg-white/12 px-6 py-2.5 text-sm font-semibold tracking-[-0.01em] text-slate-100 transition-colors hover:bg-white/20"
+                    className="shrink-0 rounded-full border border-white/30 bg-white/12 px-4 py-2 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/20"
                   >
-                    <span className="relative z-10">{item.label}</span>
+                    {item.label}
                   </motion.a>
                 ))}
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <motion.a
                 href="#contact"
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-16px_rgba(16,185,129,0.9)]"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-4 py-2 text-xs font-semibold text-white shadow-[0_12px_26px_-16px_rgba(16,185,129,0.9)]"
               >
                 Book Free Strategy Call
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-3.5 w-3.5" />
               </motion.a>
               <ThemeToggle />
             </div>
