@@ -466,55 +466,56 @@ export default function HomePage() {
       <motion.div style={{ y: orbRightY }} className="pointer-events-none absolute -right-20 top-8 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
 
       <header className="section-shell relative z-10 py-7">
-        <nav className="glass flex flex-wrap items-center justify-between gap-3 px-5 py-3 text-slate-900 dark:text-slate-100">
-          <motion.a
-            href="#"
-            whileHover={{ y: -1, scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 320, damping: 22 }}
-            className="rounded-2xl bg-white/35 px-4 py-3 transition-colors hover:bg-white/60 dark:bg-white/8 dark:hover:bg-white/12"
-          >
-            <div className="flex items-center gap-4">
-              <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/85 shadow-[0_10px_25px_-18px_rgba(15,23,42,0.9)] dark:bg-white/12">
-                <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={32} height={32} className="h-8 w-8 object-contain" priority />
-              </span>
-              <span className="space-y-0.5">
-                <p className="text-3xl font-semibold leading-tight tracking-[-0.01em] text-slate-900 dark:text-white">Nova Tech Solutions</p>
-                <p className="text-sm font-medium text-slate-700/95 dark:text-slate-200/95">Complete Digital Management for Modern Schools</p>
-              </span>
+        <nav className="glass rounded-[28px] px-6 py-5 text-slate-900 dark:text-slate-100">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <motion.a
+                href="#"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.99 }}
+                transition={{ type: "spring", stiffness: 260, damping: 24 }}
+                className="rounded-3xl border border-white/25 bg-white/25 px-5 py-4 backdrop-blur-xl dark:border-white/15 dark:bg-white/10"
+              >
+                <div className="flex items-center gap-4">
+                  <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/90 shadow-[0_14px_30px_-18px_rgba(15,23,42,0.8)] dark:bg-white/12">
+                    <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={36} height={36} className="h-9 w-9 object-contain" priority />
+                  </span>
+                  <span className="space-y-1">
+                    <p className="text-2xl font-semibold leading-none tracking-[-0.02em] text-white md:text-5xl">Nova Tech Solutions</p>
+                    <p className="text-xs font-medium text-slate-200 md:text-2xl">Complete Digital Management for Modern Schools</p>
+                  </span>
+                </div>
+              </motion.a>
+
+              <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 py-1">
+                {nav.map((item) => (
+                  <motion.a
+                    key={item.label}
+                    href={item.href}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 280, damping: 22 }}
+                    className="group relative shrink-0 rounded-full border border-white/30 bg-white/12 px-6 py-2.5 text-sm font-semibold tracking-[-0.01em] text-slate-100 transition-colors hover:bg-white/20"
+                  >
+                    <span className="relative z-10">{item.label}</span>
+                  </motion.a>
+                ))}
+              </div>
             </div>
-          </motion.a>
-          <div className="order-3 w-full md:order-none md:w-auto">
-            <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 py-1">
-              {nav.map((item) => (
-                <motion.a
-                  key={item.label}
-                  href={item.href}
-                  whileHover={{ y: -2, scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ type: "spring", stiffness: 320, damping: 22 }}
-                  className="group relative shrink-0 rounded-full border border-slate-300/60 bg-white/45 px-4 py-2 text-xs font-semibold tracking-[0.03em] text-slate-800 transition-colors hover:text-slate-950 dark:border-white/25 dark:bg-white/10 dark:text-slate-100 dark:hover:text-white"
-                >
-                  <span className="relative z-10">{item.label}</span>
-                  <span className="pointer-events-none absolute inset-x-3 bottom-1 h-px origin-left scale-x-0 bg-emerald-400 transition-transform duration-300 group-hover:scale-x-100" />
-                </motion.a>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <motion.a
-              href="#contact"
-              whileHover={{ y: -2, scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 320, damping: 22 }}
-              className="group relative overflow-hidden rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_24px_-12px_rgba(16,185,129,0.9)]"
-            >
-              <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-emerald-300/0 via-white/35 to-emerald-300/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <span className="relative">Book Free Strategy Call</span>
-            </motion.a>
-            <motion.div whileHover={{ rotate: 18 }} transition={{ type: "spring", stiffness: 280, damping: 18 }}>
+
+            <div className="flex items-center gap-3">
+              <motion.a
+                href="#contact"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-16px_rgba(16,185,129,0.9)]"
+              >
+                Book Free Strategy Call
+                <ArrowRight className="h-4 w-4" />
+              </motion.a>
               <ThemeToggle />
-            </motion.div>
+            </div>
           </div>
         </nav>
       </header>
