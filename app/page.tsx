@@ -472,15 +472,15 @@ export default function HomePage() {
             whileHover={{ y: -1, scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
-            className="rounded-xl bg-white/45 px-3 py-2 transition-colors hover:bg-white/70 dark:bg-white/10 dark:hover:bg-white/15"
+            className="rounded-2xl bg-white/35 px-4 py-3 transition-colors hover:bg-white/60 dark:bg-white/8 dark:hover:bg-white/12"
           >
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-white/70 shadow-sm dark:bg-white/10">
-                <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={34} height={34} className="h-8 w-8 object-contain" priority />
+            <div className="flex items-center gap-4">
+              <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/85 shadow-[0_10px_25px_-18px_rgba(15,23,42,0.9)] dark:bg-white/12">
+                <Image src="/logo.png" alt="Nova Tech Solutions Logo" width={32} height={32} className="h-8 w-8 object-contain" priority />
               </span>
-              <span>
-                <p className="text-lg font-bold text-slate-900 dark:text-white">Nova Tech Solutions</p>
-                <p className="text-xs text-slate-700 dark:text-slate-200">Complete Digital Management for Modern Schools</p>
+              <span className="space-y-0.5">
+                <p className="text-3xl font-semibold leading-tight tracking-[-0.01em] text-slate-900 dark:text-white">Nova Tech Solutions</p>
+                <p className="text-sm font-medium text-slate-700/95 dark:text-slate-200/95">Complete Digital Management for Modern Schools</p>
               </span>
             </div>
           </motion.a>
